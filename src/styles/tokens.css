@@ -1,0 +1,168 @@
+/**
+ * SaiUConnect Design Tokens
+ * Inspired by Sai University branding — deep university blue + teal accent.
+ * Change colors here to update the entire application.
+ */
+
+:root {
+  /* ── Brand colors ── */
+  --suc-blue-950: #041e33;
+  --suc-blue-900: #072848;
+  --suc-blue-800: #0b3d6b;
+  --suc-blue-700: #0f4f8a;
+  --suc-blue-600: #1565a8;
+  --suc-blue-500: #1a7bc4;
+  --suc-teal-700: #007a85;
+  --suc-teal-600: #00919e;
+  --suc-teal-500: #00a5ad;
+  --suc-teal-400: #33b8bf;
+  --suc-teal-100: #e0f4f5;
+  --suc-teal-50: #f0fafb;
+
+  /* ── Semantic colors ── */
+  --suc-color-primary: var(--suc-blue-800);
+  --suc-color-primary-hover: var(--suc-blue-700);
+  --suc-color-primary-active: var(--suc-blue-900);
+  --suc-color-secondary: var(--suc-teal-600);
+  --suc-color-secondary-hover: var(--suc-teal-700);
+  --suc-color-secondary-light: var(--suc-teal-100);
+
+  --suc-color-text: #1a3348;
+  --suc-color-text-heading: #0a1f33;
+  --suc-color-text-muted: #5a7184;
+  --suc-color-text-inverse: #ffffff;
+  --suc-color-text-link: var(--suc-blue-600);
+  --suc-color-text-link-hover: var(--suc-blue-700);
+
+  --suc-color-bg: #ffffff;
+  --suc-color-bg-subtle: #f4f8fb;
+  --suc-color-bg-muted: #eaf1f7;
+  --suc-color-surface: #ffffff;
+  --suc-color-surface-raised: #ffffff;
+  --suc-color-border: #d4e0ea;
+  --suc-color-border-strong: #b8cad8;
+  --suc-color-input-bg: #f8fafc;
+  --suc-color-input-bg-focus: #ffffff;
+
+  --suc-color-success: #0d7a4e;
+  --suc-color-success-bg: #ecfdf3;
+  --suc-color-success-border: #a7f3c9;
+  --suc-color-error: #b91c1c;
+  --suc-color-error-bg: #fef2f2;
+  --suc-color-error-border: #fecaca;
+  --suc-color-warning: #b45309;
+  --suc-color-warning-bg: #fffbeb;
+  --suc-color-warning-border: #fde68a;
+  --suc-color-info: var(--suc-blue-600);
+  --suc-color-info-bg: #eff6ff;
+  --suc-color-info-border: #bfdbfe;
+
+  /* ── Gradients ── */
+  --suc-gradient-primary: linear-gradient(
+    135deg,
+    var(--suc-blue-900) 0%,
+    var(--suc-blue-700) 55%,
+    var(--suc-teal-700) 100%
+  );
+  --suc-gradient-page-auth: linear-gradient(
+    160deg,
+    var(--suc-blue-950) 0%,
+    var(--suc-blue-800) 45%,
+    var(--suc-blue-700) 75%,
+    var(--suc-teal-700) 100%
+  );
+  --suc-gradient-page-dashboard: linear-gradient(
+    180deg,
+    var(--suc-color-bg-subtle) 0%,
+    var(--suc-color-bg) 40%
+  );
+  --suc-gradient-button: linear-gradient(
+    135deg,
+    var(--suc-blue-800) 0%,
+    var(--suc-blue-600) 100%
+  );
+
+  /* ── Typography ── */
+  --suc-font-sans: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --suc-font-size-xs: 0.75rem;
+  --suc-font-size-sm: 0.875rem;
+  --suc-font-size-base: 1rem;
+  --suc-font-size-lg: 1.125rem;
+  --suc-font-size-xl: 1.25rem;
+  --suc-font-size-2xl: 1.5rem;
+  --suc-font-size-3xl: 1.75rem;
+  --suc-font-weight-normal: 400;
+  --suc-font-weight-medium: 500;
+  --suc-font-weight-semibold: 600;
+  --suc-font-weight-bold: 700;
+  --suc-line-height-tight: 1.25;
+  --suc-line-height-normal: 1.5;
+  --suc-line-height-relaxed: 1.625;
+
+  /* ── Spacing ── */
+  --suc-space-1: 0.25rem;
+  --suc-space-2: 0.5rem;
+  --suc-space-3: 0.75rem;
+  --suc-space-4: 1rem;
+  --suc-space-5: 1.25rem;
+  --suc-space-6: 1.5rem;
+  --suc-space-8: 2rem;
+  --suc-space-10: 2.5rem;
+  --suc-space-12: 3rem;
+
+  /* ── Radii ── */
+  --suc-radius-sm: 6px;
+  --suc-radius-md: 10px;
+  --suc-radius-lg: 14px;
+  --suc-radius-xl: 18px;
+  --suc-radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --suc-shadow-sm: 0 1px 2px rgba(10, 31, 51, 0.06);
+  --suc-shadow-md: 0 2px 8px rgba(10, 31, 51, 0.08), 0 1px 2px rgba(10, 31, 51, 0.04);
+  --suc-shadow-lg: 0 4px 16px rgba(10, 31, 51, 0.1), 0 2px 4px rgba(10, 31, 51, 0.04);
+  --suc-shadow-card: 0 4px 24px rgba(10, 31, 51, 0.1), 0 1px 3px rgba(10, 31, 51, 0.06);
+  --suc-shadow-focus: 0 0 0 3px rgba(0, 145, 158, 0.2);
+
+  /* ── Transitions ── */
+  --suc-transition-fast: 150ms ease;
+  --suc-transition-base: 220ms ease;
+  --suc-transition-slow: 350ms ease;
+
+  /* ── Z-index ── */
+  --suc-z-dropdown: 100;
+  --suc-z-header: 200;
+  --suc-z-modal: 300;
+  --suc-z-watermark: 0;
+  --suc-z-content: 1;
+
+  /* ── Layout ── */
+  --suc-header-height: 3.5rem;
+  --suc-content-max-width: 72rem;
+  --suc-card-max-width-sm: 26.25rem;
+
+  /* ── Watermark ── */
+  --suc-watermark-opacity: 0.04;
+  --suc-watermark-opacity-auth: 0.06;
+  --suc-watermark-size: 28rem;
+
+  /* ── Legacy aliases (backward compat during migration) ── */
+  --color-primary: var(--suc-color-primary);
+  --color-primary-light: var(--suc-blue-600);
+  --color-accent: var(--suc-color-secondary);
+  --color-accent-hover: var(--suc-color-secondary-hover);
+  --color-text: var(--suc-color-text);
+  --color-text-muted: var(--suc-color-text-muted);
+  --color-text-heading: var(--suc-color-text-heading);
+  --color-surface: var(--suc-color-surface);
+  --color-border: var(--suc-color-border);
+  --color-input-bg: var(--suc-color-input-bg);
+  --color-error: var(--suc-color-error);
+  --font-sans: var(--suc-font-sans);
+  --radius-sm: var(--suc-radius-sm);
+  --radius-md: var(--suc-radius-md);
+  --radius-lg: var(--suc-radius-lg);
+  --shadow-card: var(--suc-shadow-card);
+  --transition-fast: var(--suc-transition-fast);
+  --transition-base: var(--suc-transition-base);
+}

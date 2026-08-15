@@ -1,0 +1,79 @@
+/* ── App headers ── */
+
+.suc-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--suc-z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--suc-space-4);
+  height: var(--suc-header-height);
+  padding: 0 var(--suc-space-6);
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid var(--suc-color-border);
+  backdrop-filter: blur(8px);
+}
+
+.suc-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--suc-space-3);
+  font-size: var(--suc-font-size-lg);
+  font-weight: var(--suc-font-weight-bold);
+  color: var(--suc-color-text-heading);
+  text-decoration: none;
+}
+
+.suc-header__brand:hover {
+  color: var(--suc-color-primary);
+}
+
+.suc-header__brand-mark {
+  width: 2rem;
+  height: 2rem;
+}
+
+.suc-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--suc-space-1);
+}
+
+.suc-header__nav-link {
+  padding: var(--suc-space-2) var(--suc-space-3);
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-medium);
+  color: var(--suc-color-text-muted);
+  text-decoration: none;
+  border-radius: var(--suc-radius-sm);
+  transition:
+    color var(--suc-transition-fast),
+    background-color var(--suc-transition-fast);
+}
+
+.suc-header__nav-link:hover {
+  color: var(--suc-color-text-heading);
+  background: var(--suc-color-bg-subtle);
+}
+
+.suc-header__nav-link--active {
+  color: var(--suc-color-primary);
+  background: var(--suc-teal-50);
+}
+
+.suc-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--suc-space-3);
+}
+
+@media (max-width: 768px) {
+  .suc-header {
+    padding: 0 var(--suc-space-4);
+  }
+
+  .suc-header__nav {
+    display: none;
+  }
+}

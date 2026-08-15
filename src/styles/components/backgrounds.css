@@ -1,0 +1,59 @@
+/* ── Page backgrounds ── */
+
+.suc-page-bg {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.suc-page-bg__layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--suc-z-watermark);
+  pointer-events: none;
+}
+
+.suc-page-bg__gradient {
+  position: absolute;
+  inset: 0;
+}
+
+.suc-page-bg__content {
+  position: relative;
+  z-index: var(--suc-z-content);
+}
+
+/* Auth pages — deep gradient */
+.suc-page-bg--auth .suc-page-bg__gradient {
+  background: var(--suc-gradient-page-auth);
+}
+
+.suc-page-bg--auth .suc-page-bg__gradient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(0, 165, 173, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.06) 0%, transparent 40%);
+}
+
+/* Dashboard / app pages — light */
+.suc-page-bg--dashboard .suc-page-bg__gradient {
+  background: var(--suc-gradient-page-dashboard);
+}
+
+.suc-page-bg--dashboard .suc-page-bg__gradient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 90% 10%,
+    rgba(0, 145, 158, 0.04) 0%,
+    transparent 50%
+  );
+}
+
+/* Plain subtle background */
+.suc-page-bg--plain .suc-page-bg__gradient {
+  background: var(--suc-color-bg-subtle);
+}

@@ -1,0 +1,73 @@
+@keyframes suc-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes suc-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes suc-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes suc-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes suc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes suc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.suc-animate-fade-in {
+  animation: suc-fade-in var(--suc-transition-slow) ease-out both;
+}
+
+.suc-animate-fade-in-up {
+  animation: suc-fade-in-up var(--suc-transition-slow) ease-out both;
+}
+
+.suc-animate-fade-in-down {
+  animation: suc-fade-in-down var(--suc-transition-slow) ease-out both;
+}
+
+.suc-animate-scale-in {
+  animation: suc-scale-in var(--suc-transition-slow) ease-out both;
+}

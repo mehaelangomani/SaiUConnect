@@ -20,14 +20,14 @@ function LoginForm() {
   }
 
   return (
-    <form className="login-form" onSubmit={handleSubmit} noValidate>
-      <div className="login-form__field">
-        <label className="login-form__label" htmlFor="email">
+    <form className="login-form suc-animate-fade-in-up" onSubmit={handleSubmit} noValidate>
+      <div className="suc-field">
+        <label className="suc-label" htmlFor="email">
           Email
         </label>
         <input
           id="email"
-          className="login-form__input"
+          className="suc-input"
           type="email"
           name="email"
           value={email}
@@ -39,14 +39,14 @@ function LoginForm() {
         />
       </div>
 
-      <div className="login-form__field">
-        <label className="login-form__label" htmlFor="password">
+      <div className="suc-field">
+        <label className="suc-label" htmlFor="password">
           Password
         </label>
-        <div className="login-form__password-wrapper">
+        <div className="suc-input-group">
           <input
             id="password"
-            className="login-form__input login-form__input--password"
+            className="suc-input suc-input--with-action"
             type={showPassword ? 'text' : 'password'}
             name="password"
             value={password}
@@ -58,7 +58,7 @@ function LoginForm() {
           />
           <button
             type="button"
-            className="login-form__toggle-password"
+            className="login-form__toggle suc-btn suc-btn--text"
             onClick={() => setShowPassword((visible) => !visible)}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             disabled={isLoading}
@@ -70,13 +70,13 @@ function LoginForm() {
 
       <button
         type="submit"
-        className="login-form__submit"
+        className="suc-btn suc-btn--primary suc-btn--block login-form__submit"
         disabled={isLoading}
         aria-busy={isLoading}
       >
         {isLoading ? (
           <>
-            <span className="login-form__spinner" aria-hidden="true" />
+            <span className="suc-spinner" aria-hidden="true" />
             Signing in…
           </>
         ) : (

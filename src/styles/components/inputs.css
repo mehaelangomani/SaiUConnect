@@ -1,0 +1,104 @@
+/* ── Form fields & inputs ── */
+
+.suc-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--suc-space-2);
+  text-align: left;
+}
+
+.suc-label {
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-medium);
+  color: var(--suc-color-text-heading);
+}
+
+.suc-label--required::after {
+  content: ' *';
+  color: var(--suc-color-error);
+}
+
+.suc-input,
+.suc-select,
+.suc-textarea {
+  width: 100%;
+  padding: 0.6875rem var(--suc-space-4);
+  font-size: var(--suc-font-size-base);
+  color: var(--suc-color-text-heading);
+  background: var(--suc-color-input-bg);
+  border: 1px solid var(--suc-color-border);
+  border-radius: var(--suc-radius-sm);
+  outline: none;
+  transition:
+    border-color var(--suc-transition-fast),
+    box-shadow var(--suc-transition-fast),
+    background-color var(--suc-transition-fast);
+}
+
+.suc-textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.suc-input::placeholder,
+.suc-textarea::placeholder {
+  color: var(--suc-color-text-muted);
+  opacity: 0.75;
+}
+
+.suc-input:hover:not(:disabled):not(:read-only),
+.suc-select:hover:not(:disabled),
+.suc-textarea:hover:not(:disabled):not(:read-only) {
+  border-color: var(--suc-color-border-strong);
+}
+
+.suc-input:focus,
+.suc-select:focus,
+.suc-textarea:focus {
+  border-color: var(--suc-color-secondary);
+  box-shadow: var(--suc-shadow-focus);
+  background: var(--suc-color-input-bg-focus);
+}
+
+.suc-input:disabled,
+.suc-select:disabled,
+.suc-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.suc-input--error,
+.suc-select--error,
+.suc-textarea--error {
+  border-color: var(--suc-color-error);
+}
+
+.suc-input--error:focus,
+.suc-select--error:focus,
+.suc-textarea--error:focus {
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
+.suc-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.suc-input-group .suc-input {
+  flex: 1;
+}
+
+.suc-input-group .suc-input--with-action {
+  padding-right: 4.5rem;
+}
+
+.suc-field-hint {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.suc-field-error {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-error);
+}

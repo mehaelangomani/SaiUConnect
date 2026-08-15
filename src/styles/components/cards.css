@@ -1,0 +1,45 @@
+/* ── Cards ── */
+
+.suc-card {
+  background: var(--suc-color-surface);
+  border: 1px solid var(--suc-color-border);
+  border-radius: var(--suc-radius-lg);
+  box-shadow: var(--suc-shadow-sm);
+}
+
+.suc-card--elevated {
+  box-shadow: var(--suc-shadow-card);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.suc-card--flat {
+  box-shadow: none;
+}
+
+.suc-card__header {
+  padding: var(--suc-space-5) var(--suc-space-6);
+  border-bottom: 1px solid var(--suc-color-border);
+}
+
+.suc-card__title {
+  font-size: var(--suc-font-size-lg);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-text-heading);
+}
+
+.suc-card__subtitle {
+  margin-top: var(--suc-space-1);
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+}
+
+.suc-card__body {
+  padding: var(--suc-space-6);
+}
+
+.suc-card__footer {
+  padding: var(--suc-space-4) var(--suc-space-6);
+  border-top: 1px solid var(--suc-color-border);
+  background: var(--suc-color-bg-subtle);
+  border-radius: 0 0 var(--suc-radius-lg) var(--suc-radius-lg);
+}

@@ -1,0 +1,22 @@
+/**
+ * SaiUConnect Design System
+ * Import this file once at the application root.
+ */
+
+@import './tokens.css';
+@import './base.css';
+@import './animations.css';
+
+@import './components/buttons.css';
+@import './components/inputs.css';
+@import './components/cards.css';
+@import './components/dropdowns.css';
+@import './components/modals.css';
+@import './components/backgrounds.css';
+@import './components/headers.css';
+@import './components/profile-menus.css';
+@import './components/tables.css';
+@import './components/badges.css';
+@import './components/loading.css';
+@import './components/states.css';
+@import './components/watermark.css';

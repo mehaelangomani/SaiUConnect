@@ -1,0 +1,51 @@
+/* ── Sai University logo watermark ── */
+
+.suc-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.suc-watermark__logo {
+  width: var(--suc-watermark-size);
+  height: var(--suc-watermark-size);
+  opacity: var(--suc-watermark-opacity);
+  transform: rotate(-8deg);
+}
+
+.suc-watermark--auth .suc-watermark__logo {
+  opacity: var(--suc-watermark-opacity-auth);
+}
+
+.suc-watermark--corner {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--suc-space-8);
+}
+
+.suc-watermark--corner .suc-watermark__logo {
+  width: 14rem;
+  height: 14rem;
+  transform: none;
+}
+
+.suc-watermark--subtle .suc-watermark__logo {
+  opacity: 0.025;
+}
+
+@media (max-width: 768px) {
+  .suc-watermark__logo {
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .suc-watermark--corner .suc-watermark__logo {
+    width: 10rem;
+    height: 10rem;
+  }
+}
