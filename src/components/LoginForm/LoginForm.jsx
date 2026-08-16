@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../../lib/supabase'
 import './LoginForm.css'
 
 function LoginForm() {
@@ -6,25 +7,57 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+
     if (isLoading) return
+
+    setError('')
+    setSuccess('')
+
+    const normalizedEmail = email.trim().toLowerCase()
+
+    if (!normalizedEmail || !password) {
+      setError('Please enter your email and password.')
+      return
+    }
 
     setIsLoading(true)
 
-    // Placeholder for future authentication — no backend yet
-    window.setTimeout(() => {
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      })
+
+      if (signInError) {
+        setError(signInError.message || 'Unable to sign in.')
+        return
+      }
+
+      setSuccess('Login successful!')
+    } catch (err) {
+      console.error('Login error:', err)
+      setError('Something went wrong. Please try again.')
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   return (
-    <form className="login-form suc-animate-fade-in-up" onSubmit={handleSubmit} noValidate>
+    <form
+      className="login-form suc-animate-fade-in-up"
+      onSubmit={handleSubmit}
+      noValidate
+    >
       <div className="suc-field">
         <label className="suc-label" htmlFor="email">
           Email
         </label>
+
         <input
           id="email"
           className="suc-input"
@@ -43,6 +76,7 @@ function LoginForm() {
         <label className="suc-label" htmlFor="password">
           Password
         </label>
+
         <div className="suc-input-group">
           <input
             id="password"
@@ -56,6 +90,7 @@ function LoginForm() {
             disabled={isLoading}
             required
           />
+
           <button
             type="button"
             className="login-form__toggle suc-btn suc-btn--text"
@@ -67,6 +102,34 @@ function LoginForm() {
           </button>
         </div>
       </div>
+
+      {error && (
+        <p
+          role="alert"
+          style={{
+            marginTop: '0.75rem',
+            marginBottom: '0.75rem',
+            color: '#b42318',
+            fontSize: '0.9rem',
+          }}
+        >
+          {error}
+        </p>
+      )}
+
+      {success && (
+        <p
+          role="status"
+          style={{
+            marginTop: '0.75rem',
+            marginBottom: '0.75rem',
+            color: '#067647',
+            fontSize: '0.9rem',
+          }}
+        >
+          {success}
+        </p>
+      )}
 
       <button
         type="submit"
