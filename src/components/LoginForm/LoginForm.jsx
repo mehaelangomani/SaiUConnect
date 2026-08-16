@@ -8,7 +8,6 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -16,7 +15,6 @@ function LoginForm() {
     if (isLoading) return
 
     setError('')
-    setSuccess('')
 
     const normalizedEmail = email.trim().toLowerCase()
 
@@ -35,12 +33,9 @@ function LoginForm() {
 
       if (signInError) {
         setError(signInError.message || 'Unable to sign in.')
-        return
       }
-
-      setSuccess('Login successful!')
-    } catch (err) {
-      console.error('Login error:', err)
+      // On success, AuthContext handles session + profile loading and routing redirects.
+    } catch {
       setError('Something went wrong. Please try again.')
     } finally {
       setIsLoading(false)
@@ -104,30 +99,8 @@ function LoginForm() {
       </div>
 
       {error && (
-        <p
-          role="alert"
-          style={{
-            marginTop: '0.75rem',
-            marginBottom: '0.75rem',
-            color: '#b42318',
-            fontSize: '0.9rem',
-          }}
-        >
+        <p className="login-form__error suc-alert suc-alert--error" role="alert">
           {error}
-        </p>
-      )}
-
-      {success && (
-        <p
-          role="status"
-          style={{
-            marginTop: '0.75rem',
-            marginBottom: '0.75rem',
-            color: '#067647',
-            fontSize: '0.9rem',
-          }}
-        >
-          {success}
         </p>
       )}
 

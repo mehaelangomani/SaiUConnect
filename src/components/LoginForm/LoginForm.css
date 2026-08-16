@@ -17,3 +17,7 @@
 .login-form__submit {
   margin-top: var(--suc-space-1);
 }
+
+.login-form__error {
+  margin: 0;
+}

@@ -1,0 +1,21 @@
+.auth-loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--suc-color-bg-subtle);
+}
+
+.auth-loading-screen__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--suc-space-4);
+}
+
+.auth-loading-screen__message {
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+}

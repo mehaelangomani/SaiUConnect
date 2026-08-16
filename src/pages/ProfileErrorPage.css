@@ -1,0 +1,24 @@
+.profile-error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: var(--suc-space-6);
+}
+
+.profile-error-page__card {
+  width: 100%;
+  max-width: 28rem;
+  padding: var(--suc-space-8);
+  text-align: center;
+}
+
+.profile-error-page__title {
+  margin-bottom: var(--suc-space-4);
+  font-size: var(--suc-font-size-xl);
+}
+
+.profile-error-page__message {
+  margin-bottom: var(--suc-space-6);
+  text-align: left;
+}
