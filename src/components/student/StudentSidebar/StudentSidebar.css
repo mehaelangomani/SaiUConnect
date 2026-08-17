@@ -1,0 +1,89 @@
+.student-sidebar {
+  position: sticky;
+  top: calc(var(--suc-header-height) + var(--suc-space-4));
+  flex-shrink: 0;
+  width: 15rem;
+  height: fit-content;
+  padding: var(--suc-space-3);
+  background: var(--suc-color-surface);
+  border: 1px solid var(--suc-color-border);
+  border-radius: var(--suc-radius-lg);
+  box-shadow: var(--suc-shadow-sm);
+}
+
+.student-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--suc-space-1);
+}
+
+.student-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--suc-space-3);
+  width: 100%;
+  padding: var(--suc-space-3) var(--suc-space-4);
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-medium);
+  color: var(--suc-color-text-muted);
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--suc-radius-md);
+  cursor: pointer;
+  transition:
+    color var(--suc-transition-fast),
+    background-color var(--suc-transition-fast);
+}
+
+.student-sidebar__link:hover {
+  color: var(--suc-color-text-heading);
+  background: var(--suc-color-bg-subtle);
+}
+
+.student-sidebar__link--active {
+  color: var(--suc-color-primary);
+  background: var(--suc-teal-50);
+}
+
+.student-sidebar__icon {
+  width: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.student-sidebar__backdrop {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .student-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: calc(var(--suc-z-header) + 1);
+    width: min(16rem, 85vw);
+    height: 100svh;
+    padding-top: calc(var(--suc-header-height) + var(--suc-space-4));
+    border-radius: 0;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    transform: translateX(-100%);
+    transition: transform var(--suc-transition-base);
+  }
+
+  .student-sidebar--open {
+    transform: translateX(0);
+  }
+
+  .student-sidebar__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: var(--suc-z-header);
+    background: rgba(4, 30, 51, 0.4);
+    border: none;
+    cursor: pointer;
+  }
+}

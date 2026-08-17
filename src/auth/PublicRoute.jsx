@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { getDashboardPathForRole } from './roles'
+import { getPostLoginPath } from './studentSetup'
 import AuthLoadingScreen from '../components/auth/AuthLoadingScreen'
 
 function PublicRoute({ children }) {
@@ -20,7 +20,7 @@ function PublicRoute({ children }) {
   }
 
   if (isAuthenticated && hasValidProfile) {
-    return <Navigate to={getDashboardPathForRole(profile.role)} replace />
+    return <Navigate to={getPostLoginPath(profile)} replace />
   }
 
   return children

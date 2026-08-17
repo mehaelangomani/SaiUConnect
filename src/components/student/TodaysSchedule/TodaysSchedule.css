@@ -1,0 +1,89 @@
+.todays-schedule {
+  padding: var(--suc-space-5);
+}
+
+.todays-schedule__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--suc-space-3);
+  margin-bottom: var(--suc-space-5);
+}
+
+.todays-schedule__title {
+  font-size: var(--suc-font-size-lg);
+  font-weight: var(--suc-font-weight-semibold);
+}
+
+.todays-schedule__empty {
+  margin: 0;
+  padding: var(--suc-space-6);
+  text-align: center;
+  color: var(--suc-color-text-muted);
+  background: var(--suc-color-bg-subtle);
+  border-radius: var(--suc-radius-md);
+}
+
+.todays-schedule__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--suc-space-3);
+}
+
+.todays-schedule__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--suc-space-4);
+  padding: var(--suc-space-4);
+  background: var(--suc-color-bg-subtle);
+  border: 1px solid var(--suc-color-border);
+  border-radius: var(--suc-radius-md);
+  transition: border-color var(--suc-transition-fast);
+}
+
+.todays-schedule__item:hover {
+  border-color: var(--suc-color-secondary);
+}
+
+.todays-schedule__time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 4rem;
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-primary);
+}
+
+.todays-schedule__time-sep {
+  font-weight: var(--suc-font-weight-normal);
+  color: var(--suc-color-text-muted);
+}
+
+.todays-schedule__course {
+  margin: 0 0 var(--suc-space-1);
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-heading);
+}
+
+.todays-schedule__meta {
+  margin: 0;
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+@media (max-width: 600px) {
+  .todays-schedule__item {
+    grid-template-columns: 1fr;
+    gap: var(--suc-space-2);
+  }
+
+  .todays-schedule__time {
+    flex-direction: row;
+    gap: var(--suc-space-1);
+  }
+}

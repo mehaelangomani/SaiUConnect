@@ -7,6 +7,8 @@ import { ROLES } from './auth/roles'
 import LoginPage from './components/LoginPage/LoginPage'
 import ProfileErrorPage from './pages/ProfileErrorPage'
 import StudentDashboard from './pages/StudentDashboard'
+import StudentAcademicSetup from './pages/StudentAcademicSetup'
+import StudentSetupRoute from './auth/StudentSetupRoute'
 import FacultyDashboard from './pages/FacultyDashboard'
 import EditorDashboard from './pages/EditorDashboard'
 import AdminDashboard from './pages/AdminDashboard'
@@ -30,9 +32,18 @@ function App() {
           <Route path="/auth-error" element={<ProfileErrorPage />} />
 
           <Route
-            path="/student"
+            path="/student/setup"
             element={
-              <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
+              <StudentSetupRoute>
+                <StudentAcademicSetup />
+              </StudentSetupRoute>
+            }
+          />
+
+          <Route
+            path="/student/*"
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.STUDENT]} requireStudentSetupComplete>
                 <StudentDashboard />
               </ProtectedRoute>
             }

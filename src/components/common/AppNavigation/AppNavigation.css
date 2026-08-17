@@ -1,0 +1,32 @@
+.app-navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--suc-space-1);
+}
+
+.app-navigation__btn {
+  gap: var(--suc-space-1);
+}
+
+.app-navigation__label {
+  font-size: var(--suc-font-size-sm);
+}
+
+@media (max-width: 640px) {
+  .app-navigation__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .app-navigation__btn {
+    min-width: 2.25rem;
+    padding-inline: var(--suc-space-2);
+  }
+}

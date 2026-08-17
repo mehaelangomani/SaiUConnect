@@ -1,5 +1,6 @@
 import { useAuth } from '../../auth/AuthContext'
 import PageBackground from '../PageBackground/PageBackground'
+import AppNavigation from '../common/AppNavigation/AppNavigation'
 import './DashboardLayout.css'
 
 function DashboardLayout({ title, description, children }) {
@@ -17,6 +18,7 @@ function DashboardLayout({ title, description, children }) {
           </div>
 
           <div className="suc-header__actions">
+            <AppNavigation />
             <span className="dashboard-layout__user">{displayName}</span>
             <button
               type="button"

@@ -1,0 +1,130 @@
+.student-timetable__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--suc-space-3);
+  margin-bottom: var(--suc-space-5);
+}
+
+.student-timetable__title {
+  font-size: var(--suc-font-size-xl);
+  font-weight: var(--suc-font-weight-semibold);
+}
+
+.student-timetable__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--suc-space-3);
+}
+
+.student-timetable__day {
+  padding: var(--suc-space-4);
+  min-height: 10rem;
+}
+
+.student-timetable__day-title {
+  margin-bottom: var(--suc-space-3);
+  padding-bottom: var(--suc-space-2);
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-primary);
+  border-bottom: 2px solid var(--suc-teal-100);
+}
+
+.student-timetable__empty {
+  margin: 0;
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.student-timetable__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--suc-space-3);
+}
+
+.student-timetable__entry {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--suc-space-2);
+  background: var(--suc-color-bg-subtle);
+  border-radius: var(--suc-radius-sm);
+}
+
+.student-timetable__time {
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-secondary);
+}
+
+.student-timetable__course {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-heading);
+}
+
+.student-timetable__room {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.student-timetable__faculty {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.student-timetable__category {
+  align-self: flex-start;
+  margin-top: var(--suc-space-1);
+}
+
+.student-timetable__status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--suc-space-3);
+  min-height: 12rem;
+  padding: var(--suc-space-6);
+}
+
+.student-timetable__status-text {
+  margin: 0;
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+}
+
+.student-timetable__alert {
+  margin-bottom: var(--suc-space-4);
+}
+
+.student-timetable__empty-state {
+  padding: var(--suc-space-6);
+  text-align: center;
+  color: var(--suc-color-text-muted);
+}
+
+.student-timetable__empty-state p {
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .student-timetable__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .student-timetable__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .student-timetable__grid {
+    grid-template-columns: 1fr;
+  }
+}

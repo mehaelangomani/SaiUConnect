@@ -1,0 +1,23 @@
+.confirmation-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--suc-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--suc-space-4);
+  background: rgba(4, 30, 51, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.confirmation-dialog {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.confirmation-dialog__message {
+  margin: 0;
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text);
+  line-height: var(--suc-line-height-relaxed);
+}

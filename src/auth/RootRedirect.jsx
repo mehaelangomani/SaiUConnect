@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
-import { getDashboardPathForRole } from './roles'
+import { getPostLoginPath } from './studentSetup'
 import AuthLoadingScreen from '../components/auth/AuthLoadingScreen'
 
 function RootRedirect() {
@@ -25,7 +25,7 @@ function RootRedirect() {
     return <Navigate to="/auth-error" replace />
   }
 
-  return <Navigate to={getDashboardPathForRole(profile.role)} replace />
+  return <Navigate to={getPostLoginPath(profile)} replace />
 }
 
 export default RootRedirect

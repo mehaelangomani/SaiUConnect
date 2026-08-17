@@ -1,9 +1,10 @@
 import { Navigate } from 'react-router-dom'
 import { useAuth } from './AuthContext'
-import { getDashboardPathForRole } from './roles'
+import { getDashboardPathForRole, ROLES } from './roles'
+import { isAcademicSetupComplete } from './studentSetup'
 import AuthLoadingScreen from '../components/auth/AuthLoadingScreen'
 
-function ProtectedRoute({ children, allowedRoles }) {
+function ProtectedRoute({ children, allowedRoles, requireStudentSetupComplete = false }) {
   const {
     isInitializing,
     isProfileLoading,
@@ -35,6 +36,14 @@ function ProtectedRoute({ children, allowedRoles }) {
 
   if (allowedRoles && !allowedRoles.includes(profile.role)) {
     return <Navigate to={getDashboardPathForRole(profile.role)} replace />
+  }
+
+  if (
+    requireStudentSetupComplete &&
+    profile.role === ROLES.STUDENT &&
+    !isAcademicSetupComplete(profile)
+  ) {
+    return <Navigate to="/student/setup" replace />
   }
 
   return children

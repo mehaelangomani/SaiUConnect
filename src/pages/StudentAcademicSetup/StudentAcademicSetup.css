@@ -1,0 +1,36 @@
+.student-academic-setup {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100svh;
+  padding: var(--suc-space-6);
+}
+
+.student-academic-setup__card {
+  width: 100%;
+  max-width: 52rem;
+  padding: var(--suc-space-8);
+}
+
+.student-academic-setup__header {
+  margin-bottom: var(--suc-space-6);
+  text-align: center;
+}
+
+.student-academic-setup__intro {
+  margin: var(--suc-space-4) auto 0;
+  max-width: 32rem;
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+  line-height: var(--suc-line-height-relaxed);
+}
+
+@media (max-width: 768px) {
+  .student-academic-setup {
+    padding: var(--suc-space-4);
+  }
+
+  .student-academic-setup__card {
+    padding: var(--suc-space-5);
+  }
+}
