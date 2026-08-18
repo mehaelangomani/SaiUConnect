@@ -64,13 +64,23 @@
   color: var(--suc-color-text-muted);
 }
 
-.todays-schedule__course {
+.todays-schedule__course-code {
+  margin: 0 0 2px;
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-secondary);
+}
+
+.todays-schedule__course-name {
   margin: 0 0 var(--suc-space-1);
   font-size: var(--suc-font-size-sm);
   color: var(--suc-color-text-heading);
 }
 
 .todays-schedule__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   margin: 0;
   font-size: var(--suc-font-size-xs);
   color: var(--suc-color-text-muted);

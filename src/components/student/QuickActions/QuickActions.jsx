@@ -1,10 +1,10 @@
 import './QuickActions.css'
 
 const ACTIONS = [
-  { id: 'timetable', label: 'View Timetable', description: 'See your weekly schedule', icon: '▦' },
-  { id: 'free-classrooms', label: 'Find Free Classroom', description: 'Check room availability', icon: '⌂' },
-  { id: 'faculty', label: 'Find Faculty', description: 'Browse faculty contacts', icon: '👤' },
-  { id: 'courses', label: 'View Courses', description: 'Your enrolled courses', icon: '📚' },
+  { id: 'timetable', label: 'Timetable', description: 'Your weekly schedule', icon: '▦' },
+  { id: 'free-classrooms', label: 'Free Classrooms', description: 'Find available rooms', icon: '⌂' },
+  { id: 'faculty', label: 'Faculty', description: 'Search faculty directory', icon: '👤' },
+  { id: 'courses', label: 'Enrolled Courses', description: 'Your current courses', icon: '📚' },
 ]
 
 function QuickActions({ onNavigate }) {

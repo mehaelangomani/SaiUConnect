@@ -48,7 +48,7 @@ export function studentMatchesEntry(audiences, profile) {
   return audiences.every((audience) => studentSatisfiesAudience(audience, profile))
 }
 
-function groupAudiencesByEntry(audiences) {
+export function groupAudiencesByEntry(audiences) {
   const grouped = new Map()
 
   for (const audience of audiences) {
@@ -82,11 +82,15 @@ function hasRequiredProfileFields(profile) {
 }
 
 /**
- * Fetch published timetable entries personalized for a student profile.
+ * Fetch published timetable entries and audience rows matched to a student profile.
  */
-export async function getStudentTimetable(profile) {
+export async function fetchStudentTimetableData(profile) {
   if (!hasRequiredProfileFields(profile)) {
-    return []
+    return {
+      entries: [],
+      audiencesByEntry: new Map(),
+      profileIncomplete: true,
+    }
   }
 
   const { data: entries, error: entriesError } = await supabase
@@ -102,7 +106,11 @@ export async function getStudentTimetable(profile) {
   }
 
   if (!entries || entries.length === 0) {
-    return []
+    return {
+      entries: [],
+      audiencesByEntry: new Map(),
+      profileIncomplete: false,
+    }
   }
 
   const entryIds = entries.map((entry) => entry.id)
@@ -125,7 +133,20 @@ export async function getStudentTimetable(profile) {
 
   const uniqueEntries = [...new Map(matchedEntries.map((entry) => [entry.id, entry])).values()]
 
-  return uniqueEntries
+  return {
+    entries: uniqueEntries,
+    audiencesByEntry,
+    profileIncomplete: false,
+  }
+}
+
+/**
+ * Fetch published timetable entries personalized for a student profile.
+ */
+export async function getStudentTimetable(profile) {
+  const { entries } = await fetchStudentTimetableData(profile)
+
+  return entries
     .map(normalizeTimetableEntry)
     .sort(compareTimetableEntries)
 }

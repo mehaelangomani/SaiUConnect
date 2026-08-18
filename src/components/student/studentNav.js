@@ -3,13 +3,13 @@ export const STUDENT_NAV_ITEMS = [
   { id: 'timetable', label: 'Timetable', icon: 'timetable' },
   { id: 'free-classrooms', label: 'Free Classrooms', icon: 'classroom' },
   { id: 'faculty', label: 'Faculty', icon: 'faculty' },
-  { id: 'courses', label: 'Courses', icon: 'courses' },
-  { id: 'profile', label: 'Profile', icon: 'profile' },
-  { id: 'notifications', label: 'Notifications', icon: 'notifications' },
+  { id: 'courses', label: 'Enrolled Courses', icon: 'courses' },
 ]
 
 const VALID_SECTIONS = new Set([
   ...STUDENT_NAV_ITEMS.map((item) => item.id),
+  'profile',
+  'notifications',
   'academic-setup',
 ])
 

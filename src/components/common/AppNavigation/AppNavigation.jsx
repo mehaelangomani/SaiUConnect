@@ -8,25 +8,23 @@ function AppNavigation() {
     <nav className="app-navigation" aria-label="Application navigation">
       <button
         type="button"
-        className="app-navigation__btn suc-btn suc-btn--ghost suc-btn--sm"
+        className="app-navigation__btn"
         onClick={goBack}
         disabled={!canGoBack}
         aria-label="Go back to previous page"
         title="Back"
       >
         <span aria-hidden="true">←</span>
-        <span className="app-navigation__label">Back</span>
       </button>
 
       <button
         type="button"
-        className="app-navigation__btn suc-btn suc-btn--ghost suc-btn--sm"
+        className="app-navigation__btn"
         onClick={goForward}
         disabled={!canGoForward}
         aria-label="Go forward to next page"
         title="Forward"
       >
-        <span className="app-navigation__label">Forward</span>
         <span aria-hidden="true">→</span>
       </button>
     </nav>

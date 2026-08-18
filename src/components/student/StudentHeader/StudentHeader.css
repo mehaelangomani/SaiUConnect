@@ -1,46 +1,24 @@
-.student-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--suc-z-header);
+.student-header__box {
+  position: static;
+  top: auto;
+  justify-content: flex-start;
+  width: 100%;
   height: auto;
   min-height: var(--suc-header-height);
-  padding: var(--suc-space-3) var(--suc-space-6);
-}
-
-.student-header__left {
-  display: flex;
-  align-items: center;
-  gap: var(--suc-space-3);
-}
-
-.student-header__menu-btn {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  font-size: 1.125rem;
-  color: var(--suc-color-text-heading);
-  background: var(--suc-color-bg-subtle);
-  border: 1px solid var(--suc-color-border);
-  border-radius: var(--suc-radius-sm);
-  cursor: pointer;
-  transition: background-color var(--suc-transition-fast);
-}
-
-.student-header__menu-btn:hover {
-  background: var(--suc-color-bg-muted);
+  border-radius: var(--suc-radius-lg);
 }
 
 .student-header__brand {
   display: flex;
   align-items: center;
   gap: var(--suc-space-3);
+  min-width: 0;
 }
 
 .student-header__logo {
   width: 2rem;
   height: 2rem;
+  flex-shrink: 0;
 }
 
 .student-header__brand-name {
@@ -55,65 +33,6 @@
   display: block;
   font-size: var(--suc-font-size-xs);
   color: var(--suc-color-text-muted);
-}
-
-.student-header__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--suc-space-3);
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.student-header__profile {
-  display: flex;
-  align-items: center;
-  gap: var(--suc-space-3);
-}
-
-.student-header__avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  font-size: var(--suc-font-size-sm);
-  font-weight: var(--suc-font-weight-semibold);
-  color: var(--suc-color-text-inverse);
-  background: var(--suc-gradient-button);
-  border-radius: var(--suc-radius-full);
-}
-
-.student-header__profile-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.student-header__name {
-  font-size: var(--suc-font-size-sm);
-  font-weight: var(--suc-font-weight-medium);
-  color: var(--suc-color-text-heading);
-}
-
-.student-header__role {
-  font-size: var(--suc-font-size-xs);
-  color: var(--suc-color-text-muted);
-  text-transform: capitalize;
-}
-
-@media (max-width: 768px) {
-  .student-header {
-    padding: var(--suc-space-3) var(--suc-space-4);
-  }
-
-  .student-header__menu-btn {
-    display: inline-flex;
-  }
-
-  .student-header__profile-text {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {

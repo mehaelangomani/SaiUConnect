@@ -1,0 +1,95 @@
+.student-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--suc-space-4);
+  min-height: 2.25rem;
+}
+
+.student-top-bar__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--suc-space-2);
+  flex-shrink: 0;
+}
+
+.student-top-bar__profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--suc-radius-full);
+  cursor: pointer;
+  transition: transform var(--suc-transition-fast);
+}
+
+.student-top-bar__profile-btn:hover {
+  transform: translateY(-1px);
+}
+
+.student-top-bar__profile-btn:focus-visible {
+  outline: 2px solid var(--suc-color-secondary);
+  outline-offset: 2px;
+}
+
+.student-top-bar__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: var(--suc-font-size-sm);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-text-inverse);
+  background: var(--suc-gradient-button);
+  border-radius: var(--suc-radius-full);
+}
+
+.student-top-bar__icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--suc-color-primary);
+  background: var(--suc-color-bg-subtle);
+  border: 1px solid var(--suc-color-border);
+  border-radius: var(--suc-radius-full);
+  cursor: pointer;
+  transition:
+    transform var(--suc-transition-fast),
+    background-color var(--suc-transition-fast),
+    border-color var(--suc-transition-fast);
+}
+
+.student-top-bar__icon-btn:hover {
+  transform: translateY(-1px);
+  background: var(--suc-teal-50);
+  border-color: var(--suc-teal-200);
+}
+
+.student-top-bar__icon-btn:focus-visible {
+  outline: 2px solid var(--suc-color-secondary);
+  outline-offset: 2px;
+}
+
+.student-top-bar__bell-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.student-top-bar__notification-badge {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--suc-color-secondary);
+  border: 2px solid var(--suc-color-surface);
+  border-radius: var(--suc-radius-full);
+}

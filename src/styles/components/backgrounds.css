@@ -38,6 +38,15 @@
 }
 
 /* Dashboard / app pages — light */
+.suc-page-bg--dashboard {
+  height: 100svh;
+  overflow: hidden;
+}
+
+.suc-page-bg--dashboard .suc-page-bg__content {
+  height: 100%;
+}
+
 .suc-page-bg--dashboard .suc-page-bg__gradient {
   background: var(--suc-gradient-page-dashboard);
 }

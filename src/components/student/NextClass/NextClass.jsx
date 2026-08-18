@@ -1,10 +1,10 @@
 import { useStudentTimetable } from '../../../hooks/useStudentTimetable'
-import { getNextClass } from '../../../lib/timetableUtils'
+import { getTodaysNextClass } from '../../../lib/timetableUtils'
 import './NextClass.css'
 
 function NextClass() {
   const { entries, isLoading, error } = useStudentTimetable()
-  const nextClass = getNextClass(entries)
+  const nextClass = getTodaysNextClass(entries)
 
   return (
     <section className="next-class suc-card next-class--highlight" aria-labelledby="next-class-title">
@@ -30,22 +30,16 @@ function NextClass() {
           <p className="next-class__name">{nextClass.courseName}</p>
           <dl className="next-class__details">
             <div>
-              <dt>Time</dt>
-              <dd>
-                {nextClass.startTime} – {nextClass.endTime}
-              </dd>
+              <dt>Starts</dt>
+              <dd>{nextClass.startTime}</dd>
             </div>
             <div>
               <dt>Room</dt>
               <dd>{nextClass.room}</dd>
             </div>
-            <div>
+            <div className="next-class__detail-span">
               <dt>Faculty</dt>
               <dd>{nextClass.faculty}</dd>
-            </div>
-            <div>
-              <dt>Day</dt>
-              <dd>{nextClass.day}</dd>
             </div>
           </dl>
           <span className="suc-badge suc-badge--info">{nextClass.type}</span>
@@ -53,7 +47,7 @@ function NextClass() {
       )}
 
       {!isLoading && !error && !nextClass && (
-        <p className="next-class__empty">No upcoming classes found.</p>
+        <p className="next-class__empty">No more classes today.</p>
       )}
     </section>
   )

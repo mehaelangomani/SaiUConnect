@@ -34,6 +34,10 @@
   margin: 0 0 var(--suc-space-4);
 }
 
+.next-class__detail-span {
+  grid-column: 1 / -1;
+}
+
 .next-class__details div {
   display: flex;
   flex-direction: column;

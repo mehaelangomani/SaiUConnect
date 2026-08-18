@@ -61,6 +61,16 @@
   margin-left: auto;
 }
 
+.student-profile-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--suc-space-3);
+  justify-content: flex-end;
+  margin-top: var(--suc-space-6);
+  padding-top: var(--suc-space-4);
+  border-top: 1px solid var(--suc-color-border);
+}
+
 @media (max-width: 600px) {
   .student-profile-panel__header {
     flex-direction: column;
@@ -69,5 +79,13 @@
 
   .student-profile-panel__grid {
     grid-template-columns: 1fr;
+  }
+
+  .student-profile-panel__actions {
+    flex-direction: column;
+  }
+
+  .student-profile-panel__actions .suc-btn {
+    width: 100%;
   }
 }

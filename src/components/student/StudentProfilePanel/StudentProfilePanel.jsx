@@ -14,7 +14,7 @@ import './StudentProfilePanel.css'
 
 function StudentProfilePanel() {
   const navigate = useNavigate()
-  const { profile } = useAuth()
+  const { profile, signOut } = useAuth()
 
   if (!profile) {
     return null
@@ -66,16 +66,6 @@ function StudentProfilePanel() {
             Your account information from SaiUConnect. Role is managed by administrators.
           </p>
         </div>
-
-        {profile.academic_setup_completed && (
-          <button
-            type="button"
-            className="suc-btn suc-btn--secondary suc-btn--sm"
-            onClick={() => navigate(getStudentSectionPath('academic-setup'))}
-          >
-            Edit Academic Setup
-          </button>
-        )}
       </div>
 
       <dl className="student-profile-panel__grid">
@@ -93,6 +83,25 @@ function StudentProfilePanel() {
           </div>
         ))}
       </dl>
+
+      <div className="student-profile-panel__actions">
+        {profile.academic_setup_completed && (
+          <button
+            type="button"
+            className="suc-btn suc-btn--secondary"
+            onClick={() => navigate(getStudentSectionPath('academic-setup'))}
+          >
+            Edit Academic Setup
+          </button>
+        )}
+        <button
+          type="button"
+          className="suc-btn suc-btn--ghost"
+          onClick={() => signOut()}
+        >
+          Logout
+        </button>
+      </div>
     </section>
   )
 }

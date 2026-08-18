@@ -58,32 +58,17 @@
 
 @media (max-width: 1024px) {
   .student-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: calc(var(--suc-z-header) + 1);
-    width: min(16rem, 85vw);
-    height: 100svh;
-    padding-top: calc(var(--suc-header-height) + var(--suc-space-4));
-    border-radius: 0;
-    border-left: none;
-    border-top: none;
-    border-bottom: none;
-    transform: translateX(-100%);
-    transition: transform var(--suc-transition-base);
+    position: static;
+    width: 100%;
+    height: auto;
+    transform: none;
+    padding-top: var(--suc-space-3);
+    border-radius: var(--suc-radius-lg);
   }
 
-  .student-sidebar--open {
-    transform: translateX(0);
-  }
-
-  .student-sidebar__backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: var(--suc-z-header);
-    background: rgba(4, 30, 51, 0.4);
-    border: none;
-    cursor: pointer;
+  .student-sidebar__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--suc-space-2);
   }
 }

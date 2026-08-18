@@ -1,0 +1,170 @@
+.faculty-availability__status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--suc-space-3);
+  min-height: 8rem;
+  padding: var(--suc-space-4);
+}
+
+.faculty-availability__status-text {
+  margin: 0;
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-availability__alert {
+  margin-bottom: var(--suc-space-3);
+}
+
+.faculty-availability__empty-state {
+  padding: var(--suc-space-4);
+  margin-bottom: var(--suc-space-3);
+  text-align: center;
+  font-size: var(--suc-font-size-sm);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-availability__empty-state p {
+  margin: 0;
+}
+
+.faculty-availability__matrix-wrap {
+  overflow-x: auto;
+  padding-bottom: var(--suc-space-2);
+}
+
+.faculty-availability__matrix {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: separate;
+  border-spacing: var(--suc-space-2);
+}
+
+.faculty-availability__time-header,
+.faculty-availability__day-header {
+  padding: var(--suc-space-2) var(--suc-space-3);
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-primary);
+  text-align: left;
+  border-bottom: 2px solid var(--suc-teal-100);
+}
+
+.faculty-availability__day-header {
+  text-align: center;
+}
+
+.faculty-availability__time-label {
+  min-width: 6.5rem;
+  padding: var(--suc-space-2);
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-secondary);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.faculty-availability__cell {
+  width: 16%;
+  vertical-align: top;
+}
+
+.faculty-availability__cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 4.5rem;
+  padding: var(--suc-space-2);
+  border-radius: var(--suc-radius-sm);
+}
+
+.faculty-availability__cell--free .faculty-availability__cell-inner {
+  background: var(--suc-teal-50);
+  border: 1px solid var(--suc-teal-200);
+}
+
+.faculty-availability__cell--busy .faculty-availability__cell-inner {
+  background: var(--suc-color-bg-subtle);
+  border: 1px solid var(--suc-color-border);
+}
+
+.faculty-availability__cell--unavailable .faculty-availability__cell-inner {
+  background: transparent;
+  border: 1px dashed var(--suc-color-border);
+}
+
+.faculty-availability__free-badge {
+  align-self: flex-start;
+}
+
+.faculty-availability__busy-badge {
+  align-self: flex-start;
+}
+
+.faculty-availability__course-code {
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-secondary);
+}
+
+.faculty-availability__course-name {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-heading);
+  line-height: 1.3;
+}
+
+.faculty-availability__room {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-availability__unavailable-label {
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-availability__summary {
+  margin-top: var(--suc-space-4);
+  padding-top: var(--suc-space-3);
+  border-top: 1px solid var(--suc-color-border);
+}
+
+.faculty-availability__summary-title {
+  margin: 0 0 var(--suc-space-2);
+  font-size: var(--suc-font-size-xs);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-primary);
+}
+
+.faculty-availability__summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--suc-space-3);
+}
+
+.faculty-availability__summary-day {
+  font-size: var(--suc-font-size-xs);
+}
+
+.faculty-availability__summary-day-name {
+  display: block;
+  margin-bottom: var(--suc-space-1);
+  font-weight: var(--suc-font-weight-semibold);
+  color: var(--suc-color-text-heading);
+}
+
+.faculty-availability__summary-periods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-availability__summary-periods li::before {
+  content: '• ';
+}

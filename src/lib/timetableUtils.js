@@ -53,6 +53,18 @@ export function getTodaysClasses(entries = [], date = new Date()) {
     .sort((a, b) => parseTime(a.startTime) - parseTime(b.startTime))
 }
 
+/**
+ * Returns the next class still in progress or upcoming today, or null.
+ */
+export function getTodaysNextClass(entries = [], date = new Date()) {
+  const todaysClasses = getTodaysClasses(entries, date)
+  const nowMinutes = date.getHours() * 60 + date.getMinutes()
+
+  return todaysClasses.find(
+    (entry) => parseTime(entry.endTime) > nowMinutes,
+  ) ?? null
+}
+
 export function getNextClass(entries = [], date = new Date()) {
   const todaysClasses = getTodaysClasses(entries, date)
   const nowMinutes = date.getHours() * 60 + date.getMinutes()

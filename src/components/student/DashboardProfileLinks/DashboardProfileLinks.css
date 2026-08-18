@@ -1,0 +1,21 @@
+.dashboard-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--suc-space-3);
+  justify-content: flex-end;
+}
+
+.dashboard-profile-links__btn {
+  min-width: 10rem;
+}
+
+@media (max-width: 600px) {
+  .dashboard-profile-links {
+    justify-content: stretch;
+  }
+
+  .dashboard-profile-links__btn {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}

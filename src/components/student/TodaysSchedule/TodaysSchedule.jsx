@@ -29,7 +29,7 @@ function TodaysSchedule() {
       )}
 
       {!isLoading && !error && todaysClasses.length === 0 && (
-        <p className="todays-schedule__empty">No classes scheduled for today.</p>
+        <p className="todays-schedule__empty">No classes scheduled today.</p>
       )}
 
       {!isLoading && !error && todaysClasses.length > 0 && (
@@ -42,11 +42,11 @@ function TodaysSchedule() {
                 <span>{entry.endTime}</span>
               </div>
               <div className="todays-schedule__details">
-                <p className="todays-schedule__course">
-                  <strong>{entry.courseCode}</strong> — {entry.courseName}
-                </p>
+                <p className="todays-schedule__course-code">{entry.courseCode}</p>
+                <p className="todays-schedule__course-name">{entry.courseName}</p>
                 <p className="todays-schedule__meta">
-                  {entry.room} · {entry.faculty}
+                  <span>{entry.room}</span>
+                  <span>{entry.faculty}</span>
                 </p>
               </div>
               <span className="suc-badge suc-badge--default">{entry.type}</span>
