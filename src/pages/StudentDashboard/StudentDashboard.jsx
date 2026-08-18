@@ -11,6 +11,7 @@ import StudentTimetable from '../../components/student/StudentTimetable/StudentT
 import StudentNotifications from '../../components/student/StudentNotifications/StudentNotifications'
 import StudentProfilePanel from '../../components/student/StudentProfilePanel/StudentProfilePanel'
 import StudentPlaceholder from '../../components/student/StudentPlaceholder/StudentPlaceholder'
+import FreeClassrooms from '../../components/student/FreeClassrooms/FreeClassrooms'
 import AcademicSetupEditor from '../../components/student/AcademicSetup/AcademicSetupEditor'
 import { getStudentSectionFromPath, getStudentSectionPath } from '../../components/student/studentNav'
 import { StudentTimetableProvider } from '../../hooks/useStudentTimetable'
@@ -89,12 +90,7 @@ function renderSection(section, onNavigate) {
       return <StudentTimetable />
 
     case 'free-classrooms':
-      return (
-        <StudentPlaceholder
-          title="Free Classrooms"
-          description="Search for available classrooms across campus. This feature will connect to live availability data in a future release."
-        />
-      )
+      return <FreeClassrooms />
 
     case 'faculty':
       return (

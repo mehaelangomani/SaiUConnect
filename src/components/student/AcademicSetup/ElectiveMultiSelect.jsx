@@ -1,8 +1,7 @@
 import {
-  ELECTIVE_OPTIONS,
   formatElectivesDisplay,
+  getElectiveLabel,
   getElectiveOptionsForSelection,
-  getOptionLabel,
 } from '../../../data/mockAcademicSetupOptions'
 import { removeElective, toggleElectiveSelection } from './academicSetupUtils'
 import './ElectiveMultiSelect.css'
@@ -16,7 +15,8 @@ function ElectiveMultiSelect({ id, label, electives, onChange, disabled = false 
   }
 
   const handleToggleElective = (value) => {
-    onChange(toggleElectiveSelection(electives, value))
+    const nextElectives = toggleElectiveSelection(electives, value)
+    onChange(nextElectives)
   }
 
   const handleRemoveElective = (value) => {
@@ -55,7 +55,7 @@ function ElectiveMultiSelect({ id, label, electives, onChange, disabled = false 
               type="checkbox"
               checked={electives.includes(option.value)}
               onChange={() => handleToggleElective(option.value)}
-              disabled={disabled || isNoneSelected}
+              disabled={disabled}
             />
             <span>{option.label}</span>
           </label>
@@ -70,13 +70,13 @@ function ElectiveMultiSelect({ id, label, electives, onChange, disabled = false 
           <ul className="elective-multi-select__chips">
             {electives.map((value) => (
               <li key={value} className="elective-multi-select__chip">
-                <span>{getOptionLabel(ELECTIVE_OPTIONS, value)}</span>
+                <span>{getElectiveLabel(value)}</span>
                 <button
                   type="button"
                   className="elective-multi-select__chip-remove"
                   onClick={() => handleRemoveElective(value)}
                   disabled={disabled}
-                  aria-label={`Remove ${getOptionLabel(ELECTIVE_OPTIONS, value)}`}
+                  aria-label={`Remove ${getElectiveLabel(value)}`}
                 >
                   ×
                 </button>

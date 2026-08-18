@@ -30,11 +30,18 @@ export const MINOR_OPTIONS = [
 
 export const ELECTIVE_OPTIONS = [
   { value: NONE_OPTION_VALUE, label: 'None' },
-  { value: 'machine-learning', label: 'Machine Learning (Placeholder)' },
+  { value: 'ml', label: 'Machine Learning' },
+  { value: 'cyber-security', label: 'Cyber Security' },
   { value: 'cloud-computing', label: 'Cloud Computing (Placeholder)' },
   { value: 'human-computer-interaction', label: 'Human-Computer Interaction (Placeholder)' },
   { value: 'entrepreneurship', label: 'Entrepreneurship (Placeholder)' },
 ]
+
+/**
+ * Legacy elective codes that may still exist in saved profiles.
+ * These are not auto-converted — users must re-save with canonical codes.
+ */
+export const DEPRECATED_ELECTIVE_CODES = ['machine-learning']
 
 export const SECTION_OPTIONS = [
   { value: 'section-a', label: 'Section A (Placeholder)' },
@@ -49,6 +56,14 @@ export const LAB_GROUP_OPTIONS = [
   { value: 'lab-3', label: 'Lab Group 3 (Placeholder)' },
   { value: 'lab-4', label: 'Lab Group 4 (Placeholder)' },
 ]
+
+export function getElectiveLabel(value) {
+  if (!value || value === NONE_OPTION_VALUE) {
+    return 'None'
+  }
+
+  return ELECTIVE_OPTIONS.find((option) => option.value === value)?.label ?? value
+}
 
 export function getOptionLabel(options, value) {
   if (!value || value === NONE_OPTION_VALUE) {
@@ -68,6 +83,6 @@ export function formatElectivesDisplay(electives) {
   }
 
   return electives
-    .map((value) => getOptionLabel(ELECTIVE_OPTIONS, value))
+    .map((value) => getElectiveLabel(value))
     .join(', ')
 }
