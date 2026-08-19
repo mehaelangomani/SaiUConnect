@@ -1,0 +1,73 @@
+.timetable-cell-editor__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  border: 0;
+  background: rgba(10, 31, 51, 0.35);
+}
+
+.timetable-cell-editor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(24rem, 100vw);
+  height: 100svh;
+  border-radius: 0;
+}
+
+.timetable-cell-editor__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--suc-space-3);
+  padding: var(--suc-space-5);
+  border-bottom: 1px solid var(--suc-color-border);
+}
+
+.timetable-cell-editor__title {
+  margin: 0 0 var(--suc-space-1);
+  font-size: var(--suc-font-size-lg);
+  font-weight: var(--suc-font-weight-semibold);
+}
+
+.timetable-cell-editor__context {
+  margin: 0;
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.timetable-cell-editor__close {
+  width: 2rem;
+  height: 2rem;
+  font-size: var(--suc-font-size-xl);
+  color: var(--suc-color-text-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.timetable-cell-editor__body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--suc-space-4);
+  padding: var(--suc-space-5);
+}
+
+.timetable-cell-editor__hint {
+  margin: 0;
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.timetable-cell-editor__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--suc-space-2);
+  padding: var(--suc-space-4) var(--suc-space-5);
+  border-top: 1px solid var(--suc-color-border);
+}

@@ -20,4 +20,9 @@
   font-size: var(--suc-font-size-sm);
   color: var(--suc-color-text);
   line-height: var(--suc-line-height-relaxed);
+  white-space: pre-line;
+}
+
+.confirmation-dialog__error {
+  margin: var(--suc-space-3) 0 0;
 }

@@ -73,12 +73,6 @@ function CourseCard({ course, onSelect }) {
             <dd>{course.primaryFaculty}</dd>
           </div>
         )}
-        {course.primaryRoom && (
-          <div>
-            <dt>Room</dt>
-            <dd>{course.primaryRoom}</dd>
-          </div>
-        )}
         {course.audienceContext && (
           <div>
             <dt>Section</dt>

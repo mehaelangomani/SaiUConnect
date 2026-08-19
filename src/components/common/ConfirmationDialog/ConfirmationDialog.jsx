@@ -1,21 +1,45 @@
+import { useState } from 'react'
 import './ConfirmationDialog.css'
 
 function ConfirmationDialog({
   isOpen,
   title,
   message,
+  errorMessage = null,
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',
+  loadingLabel = 'Saving…',
   onConfirm,
   onCancel,
   isLoading = false,
 }) {
+  const [isConfirming, setIsConfirming] = useState(false)
+  const isBusy = isLoading || isConfirming
+
   if (!isOpen) {
     return null
   }
 
+  const handleConfirm = async () => {
+    if (!onConfirm || isBusy) {
+      return
+    }
+
+    const result = onConfirm()
+    if (!result || typeof result.then !== 'function') {
+      return
+    }
+
+    setIsConfirming(true)
+    try {
+      await result
+    } finally {
+      setIsConfirming(false)
+    }
+  }
+
   return (
-    <div className="confirmation-dialog-overlay" role="presentation" onClick={onCancel}>
+    <div className="confirmation-dialog-overlay" role="presentation" onClick={isBusy ? undefined : onCancel}>
       <div
         className="confirmation-dialog suc-modal"
         role="alertdialog"
@@ -34,6 +58,11 @@ function ConfirmationDialog({
           <p id="confirmation-dialog-message" className="confirmation-dialog__message">
             {message}
           </p>
+          {errorMessage && (
+            <p className="confirmation-dialog__error suc-alert suc-alert--error" role="alert">
+              {errorMessage}
+            </p>
+          )}
         </div>
 
         <footer className="confirmation-dialog__footer suc-modal__footer">
@@ -41,21 +70,21 @@ function ConfirmationDialog({
             type="button"
             className="suc-btn suc-btn--secondary"
             onClick={onCancel}
-            disabled={isLoading}
+            disabled={isBusy}
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             className="suc-btn suc-btn--primary"
-            onClick={onConfirm}
-            disabled={isLoading}
-            aria-busy={isLoading}
+            onClick={handleConfirm}
+            disabled={isBusy}
+            aria-busy={isBusy}
           >
-            {isLoading ? (
+            {isBusy ? (
               <>
                 <span className="suc-spinner" aria-hidden="true" />
-                Saving…
+                {loadingLabel}
               </>
             ) : (
               confirmLabel

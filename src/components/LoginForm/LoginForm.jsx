@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { validateLoginEmail } from '../../auth/loginRules'
 import './LoginForm.css'
 
 function LoginForm() {
@@ -20,6 +21,12 @@ function LoginForm() {
 
     if (!normalizedEmail || !password) {
       setError('Please enter your email and password.')
+      return
+    }
+
+    const emailValidation = validateLoginEmail(normalizedEmail)
+    if (!emailValidation.valid) {
+      setError(emailValidation.message)
       return
     }
 

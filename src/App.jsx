@@ -59,7 +59,7 @@ function App() {
           />
 
           <Route
-            path="/editor"
+            path="/editor/*"
             element={
               <ProtectedRoute allowedRoles={[ROLES.EDITOR]}>
                 <EditorDashboard />
@@ -68,7 +68,7 @@ function App() {
           />
 
           <Route
-            path="/admin"
+            path="/admin/*"
             element={
               <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
                 <AdminDashboard />
