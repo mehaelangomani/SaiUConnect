@@ -1,6 +1,5 @@
 import {
   ACADEMIC_YEAR_OPTIONS,
-  SEMESTER_OPTIONS,
 } from '../../../data/mockAcademicSetupOptions'
 import { AcademicCourseFields } from './AcademicCourseFields'
 
@@ -13,15 +12,6 @@ export function AcademicSetupFields({ form, onChange, disabled = false, idPrefix
         value={form.academicYear}
         options={ACADEMIC_YEAR_OPTIONS}
         onChange={(value) => onChange('academicYear', value)}
-        disabled={disabled}
-        required
-      />
-      <AcademicSelectField
-        id={`${idPrefix}semester`}
-        label="Semester"
-        value={form.semester}
-        options={SEMESTER_OPTIONS}
-        onChange={(value) => onChange('semester', value)}
         disabled={disabled}
         required
       />

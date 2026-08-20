@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchAdminRequests, updateAdminRequestStatus } from '../../lib/adminRoleService'
+import { fetchAdminRequests, reviewEditorAccessRequest, updateAdminRequestStatus } from '../../lib/adminRoleService'
+import { EDITOR_ACCESS_REQUEST_TYPE } from '../../lib/editorRequestService'
 import './TimetableProfilePanels.css'
 
 function formatAdminRequest(request) {
   const payload = request.payload ?? {}
   const email = payload.email ?? payload.requester_email ?? payload.user_email
   const name = payload.name ?? payload.requester_name
+
+  if (request.request_type === EDITOR_ACCESS_REQUEST_TYPE) {
+    const facultyName = name || email || 'A faculty member'
+    return `${facultyName} has requested editor access.`
+  }
+
   if (email && name) {
     return `${request.request_type}: ${name} (${email})`
   }
@@ -38,6 +45,23 @@ function AdminNotificationsPage() {
   useEffect(() => {
     loadData()
   }, [])
+
+  const handleReview = async (request, decision) => {
+    try {
+      setError(null)
+      if (request.request_type === EDITOR_ACCESS_REQUEST_TYPE) {
+        await reviewEditorAccessRequest(request.id, decision)
+      } else {
+        await updateAdminRequestStatus(
+          request.id,
+          decision === 'approved' ? 'accepted' : 'rejected',
+        )
+      }
+      await loadData()
+    } catch (reviewError) {
+      setError(reviewError)
+    }
+  }
 
   const pendingRequests = requests.filter((request) => request.status === 'pending')
 
@@ -72,14 +96,14 @@ function AdminNotificationsPage() {
                   <button
                     type="button"
                     className="suc-btn suc-btn--primary suc-btn--sm"
-                    onClick={() => updateAdminRequestStatus(request.id, 'accepted').then(loadData)}
+                    onClick={() => handleReview(request, 'approved')}
                   >
-                    Accept
+                    {request.request_type === EDITOR_ACCESS_REQUEST_TYPE ? 'Approve' : 'Accept'}
                   </button>
                   <button
                     type="button"
                     className="suc-btn suc-btn--secondary suc-btn--sm"
-                    onClick={() => updateAdminRequestStatus(request.id, 'rejected').then(loadData)}
+                    onClick={() => handleReview(request, 'rejected')}
                   >
                     Reject
                   </button>

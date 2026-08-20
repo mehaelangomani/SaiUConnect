@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { resolveAcademicTerm, resolveSchool } from './academicTermService'
+import { fetchActiveAcademicTerm, resolveSchool } from './academicTermService'
 import { DAY_NAMES, formatTimeValue } from './timetableUtils'
 
 export const WEEKDAY_NUMBERS = [1, 2, 3, 4, 5]
@@ -152,7 +152,7 @@ function buildWeeklyGrid(timeSlots, availableRooms, occupiedBySlot) {
  * Uses three scoped Supabase queries (rooms, time slots, published entries).
  */
 export async function getWeeklyFreeClassrooms(profile, filters = {}) {
-  if (!profile?.school || !profile?.academic_year || !profile?.semester) {
+  if (!profile?.school) {
     return {
       grid: [],
       days: WEEKDAY_NUMBERS,
@@ -168,7 +168,7 @@ export async function getWeeklyFreeClassrooms(profile, filters = {}) {
   }
 
   const [term, school, timeSlots, roomsResult] = await Promise.all([
-    resolveAcademicTerm(profile),
+    fetchActiveAcademicTerm(),
     resolveSchool(profile),
     getTimeSlots(),
     supabase

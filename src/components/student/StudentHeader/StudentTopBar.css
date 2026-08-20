@@ -1,9 +1,22 @@
 .student-top-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: var(--suc-space-4);
-  min-height: 2.25rem;
+  gap: var(--suc-space-3);
+  min-height: 2.75rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.student-top-bar__nav {
+  justify-self: start;
+  min-width: 0;
+}
+
+.student-top-bar__brand {
+  justify-self: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .student-top-bar__actions {

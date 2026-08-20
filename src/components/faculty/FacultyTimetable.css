@@ -1,0 +1,34 @@
+.faculty-timetable__status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--suc-space-3);
+  padding: var(--suc-space-8);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-timetable__empty {
+  padding: var(--suc-space-6);
+  text-align: center;
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-timetable__grid-outer {
+  padding-top: 0;
+}
+
+.faculty-timetable__class-header,
+.faculty-timetable__class-cell {
+  min-width: 16rem;
+  width: 100%;
+}
+
+.faculty-timetable__card {
+  cursor: default;
+}
+
+.faculty-timetable__class-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

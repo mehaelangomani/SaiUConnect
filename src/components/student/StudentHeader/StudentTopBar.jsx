@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../auth/AuthContext'
 import AppNavigation from '../../common/AppNavigation/AppNavigation'
 import HeaderNotificationButton from './HeaderNotificationButton'
+import StudentHeader from './StudentHeader'
 import { getStudentSectionPath } from '../studentNav'
 import './StudentTopBar.css'
 
@@ -18,7 +19,13 @@ function StudentTopBar() {
 
   return (
     <div className="student-top-bar">
-      <AppNavigation />
+      <div className="student-top-bar__nav">
+        <AppNavigation />
+      </div>
+
+      <div className="student-top-bar__brand">
+        <StudentHeader />
+      </div>
 
       <div className="student-top-bar__actions">
         <HeaderNotificationButton />

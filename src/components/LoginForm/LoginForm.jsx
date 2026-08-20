@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { supabase } from '../../lib/supabase'
-import { validateLoginEmail } from '../../auth/loginRules'
+import { isFacultyFormatEmail, isStudentFormatEmail, validateLoginEmail } from '../../auth/loginRules'
+import { provisionUniversityAccountIfNeeded } from '../../lib/provisionUniversityAccount'
 import './LoginForm.css'
 
 function LoginForm() {
@@ -33,6 +34,14 @@ function LoginForm() {
     setIsLoading(true)
 
     try {
+      if (isStudentFormatEmail(normalizedEmail) || isFacultyFormatEmail(normalizedEmail)) {
+        try {
+          await provisionUniversityAccountIfNeeded(normalizedEmail)
+        } catch {
+          // Sign-in still proceeds; provisioning is best-effort for first-time accounts.
+        }
+      }
+
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: normalizedEmail,
         password,
@@ -67,7 +76,7 @@ function LoginForm() {
           name="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@university.edu"
+          placeholder="Enter your email"
           autoComplete="email"
           disabled={isLoading}
           required

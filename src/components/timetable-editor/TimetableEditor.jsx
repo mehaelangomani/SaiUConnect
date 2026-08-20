@@ -24,6 +24,8 @@ import {
 import {
   fetchDayTimetableData,
   formatTimeSlotLabel,
+  getAudienceLineDisplay,
+  getYearLineDisplay,
   parseTimeRangeInput,
 } from '../../lib/timetableEditorService'
 import { DAY_NAMES } from '../../lib/timetableUtils'
@@ -410,6 +412,7 @@ function TimetableEditor({ mode = 'admin' }) {
                   </th>
                   {rooms.map((room) => {
                     const entry = entryMap.get(`${slot.id}:${room.id}`)
+                    const audienceLine = entry ? getAudienceLineDisplay(entry.audiences) : null
                     return (
                       <td key={room.id} className="timetable-editor__cell">
                         <button
@@ -422,8 +425,9 @@ function TimetableEditor({ mode = 'admin' }) {
                           {entry ? (
                             <>
                               <span className="timetable-editor__cell-course">{entry.courseName}</span>
-                              {entry.sectionDisplay && (
-                                <span className="timetable-editor__cell-section">{entry.sectionDisplay}</span>
+                              <span className="timetable-editor__cell-section">{getYearLineDisplay(entry.year)}</span>
+                              {audienceLine && (
+                                <span className="timetable-editor__cell-section">{audienceLine}</span>
                               )}
                               <span className="timetable-editor__cell-faculty">{entry.facultyName}</span>
                               <span className="timetable-editor__cell-room">{entry.roomCode}</span>

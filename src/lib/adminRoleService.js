@@ -62,6 +62,14 @@ export async function appointAdmin(newAdminEmail, currentAdminId) {
   return targetProfile
 }
 
+export async function reviewEditorAccessRequest(requestId, decision) {
+  const { error } = await supabase.rpc('review_editor_access_request', {
+    p_request_id: requestId,
+    p_decision: decision,
+  })
+  if (error) throw error
+}
+
 export async function fetchAdminRequests() {
   const { data, error } = await supabase
     .from('admin_requests')

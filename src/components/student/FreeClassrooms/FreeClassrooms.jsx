@@ -158,7 +158,7 @@ function FreeClassrooms() {
     }
   }, [profile, profileKey, roomTypeFilter])
 
-  const profileIncomplete = !profile?.school || !profile?.academic_year || !profile?.semester
+  const profileIncomplete = !profile?.school
   const hasGrid = weeklyData?.grid?.length > 0
   const totalFreeCells = weeklyData?.grid?.reduce(
     (count, row) => count + row.cells.filter((cell) => cell.freeRooms.length > 0).length,
@@ -237,8 +237,8 @@ function FreeClassrooms() {
 
       {!isLoading && !error && weeklyData?.termNotFound && (
         <ErrorState
-          title="Academic term not found"
-          message="Could not find a matching academic term for your current academic configuration."
+          title="Timetable unavailable"
+          message="The timetable is currently unavailable because no active timetable exists."
         />
       )}
 

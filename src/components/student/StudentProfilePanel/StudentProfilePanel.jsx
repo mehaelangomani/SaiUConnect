@@ -7,7 +7,6 @@ import {
   LAB_GROUP_OPTIONS,
   MINOR_OPTIONS,
   SECTION_OPTIONS,
-  SEMESTER_OPTIONS,
 } from '../../../data/mockAcademicSetupOptions'
 import { getStudentSectionPath } from '../studentNav'
 import './StudentProfilePanel.css'
@@ -32,10 +31,6 @@ function StudentProfilePanel() {
       value: profile.academic_year
         ? getOptionLabel(ACADEMIC_YEAR_OPTIONS, profile.academic_year)
         : null,
-    },
-    {
-      label: 'Semester',
-      value: profile.semester ? getOptionLabel(SEMESTER_OPTIONS, profile.semester) : null,
     },
     {
       label: 'Minor',

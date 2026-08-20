@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import PageBackground from '../../components/PageBackground/PageBackground'
 import StudentTopBar from '../../components/student/StudentHeader/StudentTopBar'
-import StudentHeader from '../../components/student/StudentHeader/StudentHeader'
 import StudentSidebar from '../../components/student/StudentSidebar/StudentSidebar'
 import StudentDashboardHome from '../../components/student/StudentDashboardHome/StudentDashboardHome'
 import StudentTimetable from '../../components/student/StudentTimetable/StudentTimetable'
@@ -32,7 +31,6 @@ function StudentDashboard() {
           <div className="student-dashboard">
             <div className="student-dashboard__chrome">
               <StudentTopBar />
-              <StudentHeader />
             </div>
 
             <div className="student-dashboard__body">

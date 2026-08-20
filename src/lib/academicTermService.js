@@ -1,33 +1,20 @@
 import { supabase } from './supabase'
 
 /**
- * Resolve the student's academic term from profile codes.
+ * The current Admin timetable term: one active academic_terms row.
+ * Same rule as the Admin editor. Students must use this, not profile year/semester.
  */
-export async function resolveAcademicTerm(profile) {
-  const academicYear = String(profile?.academic_year ?? '').trim()
-  const semester = String(profile?.semester ?? '').trim()
-
-  if (!academicYear || !semester) {
-    return null
-  }
-
+export async function fetchActiveAcademicTerm() {
   const { data, error } = await supabase
     .from('academic_terms')
     .select('id, academic_year_code, semester_code, label')
-    .eq('academic_year_code', academicYear)
-    .eq('semester_code', semester)
+    .eq('is_active', true)
+    .order('academic_year_code', { ascending: false })
+    .limit(1)
     .maybeSingle()
 
   if (error) {
     throw error
-  }
-
-  if (!data) {
-    console.error('[SaiUConnect] Academic term lookup returned no match', {
-      academic_year: academicYear,
-      semester,
-      school: String(profile?.school ?? '').trim(),
-    })
   }
 
   return data

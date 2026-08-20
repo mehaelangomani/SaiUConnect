@@ -11,7 +11,6 @@ function normalizeElectivesArray(electives) {
 export function profileToFormData(profile) {
   return {
     academicYear: profile?.academic_year ?? '',
-    semester: profile?.semester ?? '',
     minor: profile?.minor || NONE_OPTION_VALUE,
     electives: normalizeElectivesArray(profile?.electives),
     section: profile?.section ?? '',
@@ -22,16 +21,15 @@ export function profileToFormData(profile) {
 export function formDataToPayload(form) {
   return {
     academicYear: form.academicYear,
-    semester: form.semester,
     minor: form.minor || NONE_OPTION_VALUE,
     electives: normalizeElectivesArray(form.electives),
-    section: form.section,
-    labGroup: form.labGroup,
+    section: form.section || NONE_OPTION_VALUE,
+    labGroup: form.labGroup || NONE_OPTION_VALUE,
   }
 }
 
 export function validateAcademicSetupForm(form) {
-  return Boolean(form.academicYear && form.semester && form.minor && form.section && form.labGroup)
+  return Boolean(form.academicYear && form.minor && form.section && form.labGroup)
 }
 
 function arraysEqual(left, right) {
@@ -43,7 +41,7 @@ function arraysEqual(left, right) {
 }
 
 export function hasAcademicSetupChanges(initialForm, currentForm) {
-  const scalarKeys = ['academicYear', 'semester', 'minor', 'section', 'labGroup']
+  const scalarKeys = ['academicYear', 'minor', 'section', 'labGroup']
 
   if (scalarKeys.some((key) => initialForm[key] !== currentForm[key])) {
     return true

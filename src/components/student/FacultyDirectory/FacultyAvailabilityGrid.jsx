@@ -1,5 +1,40 @@
 import './FacultyAvailabilityGrid.css'
 
+function InfoIcon() {
+  return (
+    <svg
+      className="faculty-info-notice__icon-svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <circle cx="10" cy="10" r="8.25" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M10 9v5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <circle cx="10" cy="6.25" r="0.9" fill="currentColor" />
+    </svg>
+  )
+}
+
+export function FacultyInfoNotice({ title, detail }) {
+  return (
+    <div className="faculty-info-notice" role="status">
+      <span className="faculty-info-notice__icon">
+        <InfoIcon />
+      </span>
+      <div className="faculty-info-notice__body">
+        <p className="faculty-info-notice__title">{title}</p>
+        {detail ? <p className="faculty-info-notice__detail">{detail}</p> : null}
+      </div>
+    </div>
+  )
+}
+
 function AvailabilityLoadingState() {
   return (
     <div className="faculty-availability__status" role="status" aria-live="polite">
@@ -20,12 +55,8 @@ function AvailabilityErrorState({ message }) {
   )
 }
 
-function AvailabilityEmptyState({ message }) {
-  return (
-    <div className="faculty-availability__empty-state suc-card" role="status">
-      <p>{message}</p>
-    </div>
-  )
+function AvailabilityEmptyState({ title, detail }) {
+  return <FacultyInfoNotice title={title} detail={detail} />
 }
 
 function AvailabilityCell({ cell }) {
@@ -114,13 +145,16 @@ function FacultyAvailabilityGrid({ availability, isLoading, error }) {
 
   if (availability.profileIncomplete) {
     return (
-      <AvailabilityEmptyState message="Complete your academic setup to view faculty availability." />
+      <AvailabilityEmptyState title="Complete your academic setup to view faculty availability." />
     )
   }
 
   if (availability.termNotFound) {
     return (
-      <AvailabilityErrorState message="Could not find a matching academic term for your current academic configuration." />
+      <AvailabilityEmptyState
+        title="Faculty availability is not currently available."
+        detail="Availability will be shown once a timetable is published."
+      />
     )
   }
 
@@ -132,7 +166,7 @@ function FacultyAvailabilityGrid({ availability, isLoading, error }) {
 
   if (!availability.hasGrid) {
     return (
-      <AvailabilityEmptyState message="No time slots are available to display faculty availability." />
+      <AvailabilityEmptyState title="No time slots are available to display faculty availability." />
     )
   }
 
@@ -141,11 +175,11 @@ function FacultyAvailabilityGrid({ availability, isLoading, error }) {
   return (
     <div className="faculty-availability">
       {!availability.hasClasses && (
-        <AvailabilityEmptyState message="No published classes found for this faculty member in the current academic term." />
+        <AvailabilityEmptyState title="No published classes found for this faculty member." />
       )}
 
       {availability.hasClasses && !hasFreeSlots && (
-        <AvailabilityEmptyState message="No free time slots found in the current timetable." />
+        <AvailabilityEmptyState title="No free time slots found in the current timetable." />
       )}
 
       <div className="faculty-availability__matrix-wrap">

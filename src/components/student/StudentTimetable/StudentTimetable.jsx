@@ -32,6 +32,17 @@ function TimetableEmptyState() {
   )
 }
 
+function TimetableUnavailableState() {
+  return (
+    <div className="suc-alert suc-alert--error student-timetable__alert" role="alert">
+      <div>
+        <p className="suc-alert__title">Timetable unavailable</p>
+        <p>The timetable is currently unavailable because no active timetable exists.</p>
+      </div>
+    </div>
+  )
+}
+
 function TimetableEntryCard({ entry }) {
   return (
     <li className="student-timetable__entry">
@@ -51,7 +62,7 @@ function TimetableEntryCard({ entry }) {
 }
 
 function StudentTimetable() {
-  const { entries, isLoading, error } = useStudentTimetable()
+  const { entries, isLoading, error, termNotFound } = useStudentTimetable()
   const weeklySchedule = groupTimetableByDay(entries)
   const hasClasses = entries.length > 0
 
@@ -72,9 +83,11 @@ function StudentTimetable() {
 
       {!isLoading && error && <TimetableErrorState error={error} />}
 
-      {!isLoading && !error && !hasClasses && <TimetableEmptyState />}
+      {!isLoading && !error && termNotFound && <TimetableUnavailableState />}
 
-      {!isLoading && !error && hasClasses && (
+      {!isLoading && !error && !termNotFound && !hasClasses && <TimetableEmptyState />}
+
+      {!isLoading && !error && !termNotFound && hasClasses && (
         <div className="student-timetable__grid">
           {weeklySchedule.map(({ day, classes }) => (
             <div key={day} className="student-timetable__day suc-card">

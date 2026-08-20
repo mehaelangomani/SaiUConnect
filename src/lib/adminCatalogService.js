@@ -100,7 +100,7 @@ async function deactivateCatalogRow(table, rowId, entityName) {
 export async function fetchAllFaculty(includeInactive = false) {
   let query = supabase
     .from('faculty_members')
-    .select('id, name, email, school_id, is_active')
+    .select('id, name, email, is_active')
     .order('name')
   if (!includeInactive) {
     query = query.eq('is_active', true)
@@ -110,19 +110,15 @@ export async function fetchAllFaculty(includeInactive = false) {
   return data ?? []
 }
 
-export async function createFacultyMember({ name, email, schoolId = null, department = null }) {
+export async function createFacultyMember({ name, email }) {
   const payload = {
     name: String(name).trim(),
     email: String(email).trim().toLowerCase(),
-    school_id: schoolId,
-  }
-  if (department) {
-    payload.department = String(department).trim()
   }
   const { data, error } = await supabase
     .from('faculty_members')
     .insert(payload)
-    .select('id, name, email, school_id, is_active')
+    .select('id, name, email, is_active')
     .single()
   if (error) throw error
   return data
@@ -383,16 +379,6 @@ export async function countEntriesForTimeSlot(timeSlotId) {
   return count ?? 0
 }
 
-export async function fetchActiveAcademicTerm() {
-  const { data, error } = await supabase
-    .from('academic_terms')
-    .select('id, academic_year_code, semester_code, label')
-    .eq('is_active', true)
-    .order('academic_year_code', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-  if (error) throw error
-  return data
-}
+export { fetchActiveAcademicTerm } from './academicTermService'
 
 export { COURSE_CATEGORY_LABELS }

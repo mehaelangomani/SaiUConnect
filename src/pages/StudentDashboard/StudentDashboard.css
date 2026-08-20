@@ -12,7 +12,7 @@
   z-index: var(--suc-z-header);
   display: flex;
   flex-direction: column;
-  gap: var(--suc-space-3);
+  gap: 0;
   padding: var(--suc-space-3) var(--suc-space-6) 0;
   flex-shrink: 0;
 }

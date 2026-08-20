@@ -33,7 +33,6 @@ export function AcademicCourseFields({ form, onChange, disabled = false, idPrefi
         options={SECTION_OPTIONS}
         onChange={(value) => onChange('section', value)}
         disabled={disabled}
-        required
       />
       <AcademicSelectField
         id={`${idPrefix}labGroup`}
@@ -42,7 +41,6 @@ export function AcademicCourseFields({ form, onChange, disabled = false, idPrefi
         options={LAB_GROUP_OPTIONS}
         onChange={(value) => onChange('labGroup', value)}
         disabled={disabled}
-        required
       />
     </>
   )

@@ -9,14 +9,13 @@ import {
   LAB_GROUP_OPTIONS,
   MINOR_OPTIONS,
   SECTION_OPTIONS,
-  SEMESTER_OPTIONS,
 } from '../../../data/mockAcademicSetupOptions'
 import { AcademicCourseFields } from './AcademicCourseFields'
 import { formDataToPayload, profileToFormData } from './academicSetupUtils'
 import './AcademicSetupForm.css'
 
 const STEPS = [
-  { id: 'academic', title: 'Academic term', description: 'Select your current year and semester.' },
+  { id: 'academic', title: 'Academic term', description: 'Select your current year.' },
   {
     id: 'courses',
     title: 'Course selections',
@@ -53,8 +52,8 @@ function AcademicSetupForm() {
 
   const validateStep = (index) => {
     if (index === 0) {
-      if (!form.academicYear || !form.semester) {
-        setError('Please select both academic year and semester.')
+      if (!form.academicYear) {
+        setError('Please select an academic year.')
         return false
       }
     }
@@ -169,15 +168,6 @@ function AcademicSetupForm() {
               disabled={isSaving}
               required
             />
-            <SelectField
-              id="semester"
-              label="Semester"
-              value={form.semester}
-              options={SEMESTER_OPTIONS}
-              onChange={(value) => updateField('semester', value)}
-              disabled={isSaving}
-              required
-            />
           </div>
         )}
 
@@ -278,7 +268,6 @@ function SelectField({ id, label, value, options, onChange, disabled, required }
 function ReviewSummary({ form }) {
   const rows = [
     { label: 'Academic year', value: getOptionLabel(ACADEMIC_YEAR_OPTIONS, form.academicYear) },
-    { label: 'Semester', value: getOptionLabel(SEMESTER_OPTIONS, form.semester) },
     { label: 'Minor', value: getOptionLabel(MINOR_OPTIONS, form.minor) },
     { label: 'Electives', value: formatElectivesDisplay(form.electives) },
     { label: 'Section', value: getOptionLabel(SECTION_OPTIONS, form.section) },

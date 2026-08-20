@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { resolveAcademicTerm, resolveSchool } from './academicTermService'
+import { fetchActiveAcademicTerm, resolveSchool } from './academicTermService'
 import {
   formatTimeRange,
   getPeriodRowsFromTimeSlots,
@@ -17,18 +17,12 @@ const MATCH_RANK = {
 }
 
 function normalizeFacultyMember(row) {
-  const school = row.schools ?? null
-
   return {
     id: row.id,
     profileId: row.profile_id,
     name: row.name,
     email: row.email,
     initial: row.initial ?? getInitials(row.name),
-    department: row.department ?? '',
-    schoolId: row.school_id,
-    schoolCode: school?.code ?? null,
-    schoolName: school?.name ?? null,
     isActive: row.is_active,
   }
 }
@@ -91,7 +85,7 @@ function buildCoursesByFaculty(entries = []) {
 }
 
 async function fetchFacultyCoursesForProfile(profile) {
-  const term = await resolveAcademicTerm(profile)
+  const term = await fetchActiveAcademicTerm()
   const school = await resolveSchool(profile)
 
   if (!term || !school) {
@@ -114,7 +108,7 @@ async function fetchFacultyCoursesForProfile(profile) {
 }
 
 /**
- * Fetch active faculty members with school information and course context.
+ * Fetch active faculty members and published course context for the student school.
  */
 export async function getFacultyDirectory(profile) {
   const { data, error } = await supabase
@@ -122,17 +116,10 @@ export async function getFacultyDirectory(profile) {
     .select(`
       id,
       profile_id,
-      school_id,
       name,
       email,
       initial,
-      department,
-      is_active,
-      schools (
-        id,
-        code,
-        name
-      )
+      is_active
     `)
     .eq('is_active', true)
     .order('name', { ascending: true })
@@ -146,7 +133,11 @@ export async function getFacultyDirectory(profile) {
   let coursesByFacultyId = new Map()
 
   if (profile) {
-    coursesByFacultyId = await fetchFacultyCoursesForProfile(profile)
+    try {
+      coursesByFacultyId = await fetchFacultyCoursesForProfile(profile)
+    } catch {
+      coursesByFacultyId = new Map()
+    }
   }
 
   return {
@@ -169,7 +160,6 @@ function getFacultyMatchRank(member, query) {
     member.name,
     member.email,
     member.initial,
-    member.department,
   ]
     .filter(Boolean)
     .join(' ')
@@ -365,12 +355,12 @@ export async function getFacultyWeeklyAvailability({ facultyId, profile }) {
     return createEmptyAvailabilityResult()
   }
 
-  if (!profile?.school || !profile?.academic_year || !profile?.semester) {
+  if (!profile?.school) {
     return createEmptyAvailabilityResult({ profileIncomplete: true })
   }
 
   const [term, school, timeSlots] = await Promise.all([
-    resolveAcademicTerm(profile),
+    fetchActiveAcademicTerm(),
     resolveSchool(profile),
     getTimeSlots(),
   ])

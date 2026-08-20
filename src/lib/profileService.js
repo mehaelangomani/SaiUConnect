@@ -52,7 +52,6 @@ export async function updateAcademicSetup(userId, setupData) {
     .from('profiles')
     .update({
       academic_year: setupData.academicYear,
-      semester: setupData.semester,
       minor: setupData.minor,
       electives: setupData.electives,
       section: setupData.section,

@@ -38,7 +38,7 @@ export function studentSatisfiesAudience(audience, profile) {
 
 /**
  * Audience rows on the same entry are combined with AND semantics.
- * Zero audience rows means the entry applies to all students in school/term.
+ * Zero audience rows means the entry applies to all students in that school.
  */
 export function studentMatchesEntry(audiences, profile) {
   if (!audiences || audiences.length === 0) {
@@ -46,6 +46,18 @@ export function studentMatchesEntry(audiences, profile) {
   }
 
   return audiences.every((audience) => studentSatisfiesAudience(audience, profile))
+}
+
+/**
+ * Year targeting: NULL/empty year matches every student (legacy rows).
+ * Otherwise the entry year must equal profiles.academic_year (year-1..year-5).
+ */
+export function studentMatchesEntryYear(entryYear, profile) {
+  if (entryYear == null || entryYear === '') {
+    return true
+  }
+
+  return entryYear === profile?.academic_year
 }
 
 export function groupAudiencesByEntry(audiences) {
@@ -78,27 +90,33 @@ function normalizeTimetableEntry(row) {
 }
 
 function hasRequiredProfileFields(profile) {
-  return Boolean(profile?.school && profile?.academic_year && profile?.semester)
+  return Boolean(profile?.school)
+}
+
+function emptyTimetableResult(overrides = {}) {
+  return {
+    entries: [],
+    audiencesByEntry: new Map(),
+    profileIncomplete: false,
+    termNotFound: false,
+    ...overrides,
+  }
 }
 
 /**
- * Fetch published timetable entries and audience rows matched to a student profile.
+ * Fetch published timetable entries matched to a student profile.
+ * Matching: school + published + year + existing audience rules.
+ * Does not use academic_terms / academic_year_code / semester.
  */
 export async function fetchStudentTimetableData(profile) {
   if (!hasRequiredProfileFields(profile)) {
-    return {
-      entries: [],
-      audiencesByEntry: new Map(),
-      profileIncomplete: true,
-    }
+    return emptyTimetableResult({ profileIncomplete: true })
   }
 
   const { data: entries, error: entriesError } = await supabase
     .from('v_timetable_entries_enriched')
     .select('*')
     .eq('school_code', profile.school)
-    .eq('academic_year_code', profile.academic_year)
-    .eq('semester_code', profile.semester)
     .eq('is_published', true)
 
   if (entriesError) {
@@ -106,11 +124,7 @@ export async function fetchStudentTimetableData(profile) {
   }
 
   if (!entries || entries.length === 0) {
-    return {
-      entries: [],
-      audiencesByEntry: new Map(),
-      profileIncomplete: false,
-    }
+    return emptyTimetableResult()
   }
 
   const entryIds = entries.map((entry) => entry.id)
@@ -128,7 +142,10 @@ export async function fetchStudentTimetableData(profile) {
 
   const matchedEntries = entries.filter((entry) => {
     const entryAudiences = audiencesByEntry.get(entry.id) ?? []
-    return studentMatchesEntry(entryAudiences, profile)
+    return (
+      studentMatchesEntryYear(entry.year, profile)
+      && studentMatchesEntry(entryAudiences, profile)
+    )
   })
 
   const uniqueEntries = [...new Map(matchedEntries.map((entry) => [entry.id, entry])).values()]
@@ -137,6 +154,7 @@ export async function fetchStudentTimetableData(profile) {
     entries: uniqueEntries,
     audiencesByEntry,
     profileIncomplete: false,
+    termNotFound: false,
   }
 }
 
@@ -144,9 +162,13 @@ export async function fetchStudentTimetableData(profile) {
  * Fetch published timetable entries personalized for a student profile.
  */
 export async function getStudentTimetable(profile) {
-  const { entries } = await fetchStudentTimetableData(profile)
+  const result = await fetchStudentTimetableData(profile)
 
-  return entries
-    .map(normalizeTimetableEntry)
-    .sort(compareTimetableEntries)
+  return {
+    entries: result.entries
+      .map(normalizeTimetableEntry)
+      .sort(compareTimetableEntries),
+    profileIncomplete: result.profileIncomplete,
+    termNotFound: result.termNotFound,
+  }
 }

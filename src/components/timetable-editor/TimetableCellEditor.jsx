@@ -19,6 +19,7 @@ import {
   TimetableConflictError,
   unpublishTimetableCell,
 } from '../../lib/timetableEditorService'
+import { TIMETABLE_YEAR_OPTIONS } from '../../data/mockAcademicSetupOptions'
 import './TimetableCellEditor.css'
 
 const COURSE_FIELD_OPTIONS = Object.values(COURSE_CATEGORY_LABELS).map((label) => ({
@@ -70,6 +71,7 @@ function TimetableCellEditor({
   const [courseId, setCourseId] = useState('')
   const [facultyMemberId, setFacultyMemberId] = useState('')
   const [courseCategory, setCourseCategory] = useState('')
+  const [yearValue, setYearValue] = useState('')
   const [sectionValue, setSectionValue] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -175,6 +177,7 @@ function TimetableCellEditor({
       setCourseId(entry.courseId ?? '')
       setFacultyMemberId(entry.facultyMemberId ?? '')
       setCourseCategory(entry.courseCategory ?? '')
+      setYearValue(entry.year ?? '')
       setSectionValue(parseSectionValueFromEntry(entry.audiences))
       return
     }
@@ -183,6 +186,7 @@ function TimetableCellEditor({
     setCourseId('')
     setFacultyMemberId('')
     setCourseCategory('')
+    setYearValue('')
     setSectionValue('')
   }, [isOpen, cellKey, entry])
 
@@ -193,6 +197,11 @@ function TimetableCellEditor({
   const handleDone = async () => {
     if (!schoolId || !courseId || !facultyMemberId || !courseCategory) {
       setError('School, faculty, course, and course field are required.')
+      return
+    }
+
+    if (!yearValue) {
+      setError('Select a year before saving this class.')
       return
     }
 
@@ -210,6 +219,7 @@ function TimetableCellEditor({
         roomId: cellContext.roomId,
         timeSlotId: cellContext.timeSlotId,
         sectionValue,
+        year: yearValue,
         courseCategory,
         isPublished: true,
       })
@@ -277,76 +287,6 @@ function TimetableCellEditor({
           )}
 
           <AutocompleteField
-            label="School"
-            value={schoolId}
-            options={schoolOptions}
-            onChange={handleSchoolChange}
-            placeholder="Select school"
-            onAdd={async (code) => {
-              const created = await createSchool(code, code)
-              await onRefreshCatalog()
-              setSchoolId(created.id)
-            }}
-            onDelete={async (option) => {
-              const schoolRowId = option?.id
-              if (!schoolRowId) {
-                throw new Error('This school is missing a database ID. Refresh and try again.')
-              }
-              await deactivateSchool(schoolRowId)
-              await onRefreshCatalog()
-              if (schoolId === schoolRowId) {
-                setSchoolId('')
-              }
-            }}
-            getOptionLabel={(option) => option.label}
-            getOptionValue={(option) => option.id}
-            filterOption={(option, query) =>
-              option.label.toLowerCase().includes(query.toLowerCase())
-            }
-            getDeleteConfirmMessage={(option) =>
-              `Deactivate ${option.label}? It will be removed from autocomplete but timetable history is preserved.`
-            }
-            addLabel="+ ADD SCHOOL"
-          />
-
-          <AutocompleteField
-            label="Faculty name"
-            value={facultyMemberId}
-            options={facultyOptions}
-            onChange={setFacultyMemberId}
-            placeholder="Select faculty"
-            addFields={FACULTY_ADD_FIELDS}
-            onAdd={async (values) => {
-              const created = await createFacultyMember({
-                name: values.name,
-                email: values.email,
-                schoolId: schoolId || null,
-              })
-              await onRefreshCatalog()
-              setFacultyMemberId(created.id)
-            }}
-            onDelete={async (option) => {
-              const facultyRowId = option?.id
-              if (!facultyRowId) {
-                throw new Error('This faculty member is missing a database ID. Refresh and try again.')
-              }
-              await deactivateFacultyMember(facultyRowId)
-              await onRefreshCatalog()
-              if (facultyMemberId === facultyRowId) {
-                setFacultyMemberId('')
-              }
-            }}
-            getOptionValue={(option) => option.id}
-            filterOption={(option, query) =>
-              option.label.toLowerCase().includes(query.toLowerCase())
-            }
-            getDeleteConfirmMessage={(option) =>
-              `Deactivate ${option.label}? They will be removed from autocomplete but timetable history is preserved.`
-            }
-            addLabel="+ ADD FACULTY"
-          />
-
-          <AutocompleteField
             label="Course name"
             value={courseId}
             options={courseOptions}
@@ -411,6 +351,54 @@ function TimetableCellEditor({
           />
 
           <AutocompleteField
+            label="School"
+            value={schoolId}
+            options={schoolOptions}
+            onChange={handleSchoolChange}
+            placeholder="Select school"
+            onAdd={async (code) => {
+              const created = await createSchool(code, code)
+              await onRefreshCatalog()
+              setSchoolId(created.id)
+            }}
+            onDelete={async (option) => {
+              const schoolRowId = option?.id
+              if (!schoolRowId) {
+                throw new Error('This school is missing a database ID. Refresh and try again.')
+              }
+              await deactivateSchool(schoolRowId)
+              await onRefreshCatalog()
+              if (schoolId === schoolRowId) {
+                setSchoolId('')
+              }
+            }}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.id}
+            filterOption={(option, query) =>
+              option.label.toLowerCase().includes(query.toLowerCase())
+            }
+            getDeleteConfirmMessage={(option) =>
+              `Deactivate ${option.label}? It will be removed from autocomplete but timetable history is preserved.`
+            }
+            addLabel="+ ADD SCHOOL"
+          />
+
+          <AutocompleteField
+            label="Year"
+            value={yearValue}
+            options={TIMETABLE_YEAR_OPTIONS}
+            onChange={setYearValue}
+            placeholder="Select year"
+            allowAdd={false}
+            allowDelete={false}
+            getOptionValue={(option) => option.value}
+            getOptionLabel={(option) => option.label}
+            filterOption={(option, query) =>
+              option.label.toLowerCase().includes(query.toLowerCase())
+            }
+          />
+
+          <AutocompleteField
             label="Section"
             value={sectionValue}
             options={sectionOptions}
@@ -452,6 +440,42 @@ function TimetableCellEditor({
               `Deactivate ${option.label}? It will be removed from autocomplete but timetable history is preserved.`
             }
             addLabel="+ ADD SECTION"
+          />
+
+          <AutocompleteField
+            label="Faculty name"
+            value={facultyMemberId}
+            options={facultyOptions}
+            onChange={setFacultyMemberId}
+            placeholder="Select faculty"
+            addFields={FACULTY_ADD_FIELDS}
+            onAdd={async (values) => {
+              const created = await createFacultyMember({
+                name: values.name,
+                email: values.email,
+              })
+              await onRefreshCatalog()
+              setFacultyMemberId(created.id)
+            }}
+            onDelete={async (option) => {
+              const facultyRowId = option?.id
+              if (!facultyRowId) {
+                throw new Error('This faculty member is missing a database ID. Refresh and try again.')
+              }
+              await deactivateFacultyMember(facultyRowId)
+              await onRefreshCatalog()
+              if (facultyMemberId === facultyRowId) {
+                setFacultyMemberId('')
+              }
+            }}
+            getOptionValue={(option) => option.id}
+            filterOption={(option, query) =>
+              option.label.toLowerCase().includes(query.toLowerCase())
+            }
+            getDeleteConfirmMessage={(option) =>
+              `Deactivate ${option.label}? They will be removed from autocomplete but timetable history is preserved.`
+            }
+            addLabel="+ ADD FACULTY"
           />
 
           {selectedCourse && (

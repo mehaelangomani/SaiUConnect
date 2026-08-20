@@ -25,6 +25,7 @@ function useStudentTimetableState() {
   const [entries, setEntries] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [termNotFound, setTermNotFound] = useState(false)
 
   const profileKey = useMemo(() => buildProfileKey(profile), [profile])
 
@@ -35,6 +36,7 @@ function useStudentTimetableState() {
       if (!profile) {
         setEntries([])
         setError(null)
+        setTermNotFound(false)
         setIsLoading(false)
         return
       }
@@ -43,14 +45,16 @@ function useStudentTimetableState() {
       setError(null)
 
       try {
-        const timetableEntries = await getStudentTimetable(profile)
+        const timetable = await getStudentTimetable(profile)
 
         if (!isCancelled) {
-          setEntries(timetableEntries)
+          setEntries(timetable.entries)
+          setTermNotFound(Boolean(timetable.termNotFound))
         }
       } catch (loadError) {
         if (!isCancelled) {
           setEntries([])
+          setTermNotFound(false)
           setError(loadError)
         }
       } finally {
@@ -71,6 +75,7 @@ function useStudentTimetableState() {
     entries,
     isLoading,
     error,
+    termNotFound,
   }
 }
 

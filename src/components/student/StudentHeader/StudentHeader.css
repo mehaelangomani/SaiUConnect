@@ -1,18 +1,10 @@
-.student-header__box {
-  position: static;
-  top: auto;
-  justify-content: flex-start;
-  width: 100%;
-  height: auto;
-  min-height: var(--suc-header-height);
-  border-radius: var(--suc-radius-lg);
-}
-
 .student-header__brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--suc-space-3);
   min-width: 0;
+  max-width: 100%;
 }
 
 .student-header__logo {
@@ -21,21 +13,41 @@
   flex-shrink: 0;
 }
 
+.student-header__brand-text {
+  min-width: 0;
+}
+
 .student-header__brand-name {
   display: block;
   font-size: var(--suc-font-size-lg);
   font-weight: var(--suc-font-weight-bold);
   color: var(--suc-color-text-heading);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .student-header__brand-sub {
   display: block;
   font-size: var(--suc-font-size-xs);
   color: var(--suc-color-text-muted);
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .student-header__logo {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .student-header__brand {
+    gap: var(--suc-space-2);
+  }
+
+  .student-header__brand-name {
+    font-size: var(--suc-font-size-sm);
+  }
+
   .student-header__brand-sub {
     display: none;
   }

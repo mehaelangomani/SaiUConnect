@@ -1,0 +1,5 @@
+# SaiUConnect — function settings only.
+# Deploy functions with the Supabase CLI against the hosted project.
+
+[functions.provision-university-user]
+verify_jwt = false

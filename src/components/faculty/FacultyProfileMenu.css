@@ -1,0 +1,28 @@
+.faculty-profile-menu__trigger {
+  padding: 0;
+}
+
+.faculty-profile-menu__panel {
+  min-width: 16rem;
+}
+
+.faculty-profile-menu__logout {
+  margin: var(--suc-space-2);
+  width: calc(100% - var(--suc-space-4));
+}
+
+.faculty-profile-menu__request {
+  margin: 0 var(--suc-space-2) var(--suc-space-2);
+  width: calc(100% - var(--suc-space-4));
+}
+
+.faculty-profile-menu__status,
+.faculty-profile-menu__message {
+  margin: 0 var(--suc-space-3) var(--suc-space-2);
+  font-size: var(--suc-font-size-xs);
+  color: var(--suc-color-text-muted);
+}
+
+.faculty-profile-menu__message--error {
+  color: var(--suc-color-danger, #b42318);
+}

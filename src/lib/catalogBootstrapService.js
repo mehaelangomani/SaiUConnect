@@ -40,17 +40,14 @@ const DUMMY_FACULTY = [
   {
     name: 'Dr. Dummy Alpha',
     email: 'dummy.alpha@test.saiuconnect.invalid',
-    department: 'Computer Science',
   },
   {
     name: 'Dr. Dummy Beta',
     email: 'dummy.beta@test.saiuconnect.invalid',
-    department: 'Computer Science',
   },
   {
     name: 'Dr. Dummy Gamma',
     email: 'dummy.gamma@test.saiuconnect.invalid',
-    department: 'Computer Science',
   },
 ]
 
@@ -99,7 +96,7 @@ async function ensureRooms() {
   }
 }
 
-async function ensureFaculty(schoolId) {
+async function ensureFaculty() {
   const existing = await fetchAllFaculty(true)
   if (existing.length > 0) {
     return
@@ -109,8 +106,6 @@ async function ensureFaculty(schoolId) {
     await createFacultyMember({
       name: member.name,
       email: member.email,
-      schoolId,
-      department: member.department,
     })
   }
 }
@@ -153,17 +148,9 @@ export async function ensureCatalogBootstrap() {
       await ensureSchools()
       await ensureRooms()
       await ensureSections()
+      await ensureFaculty()
 
       const schools = await fetchAllSchools()
-      const primarySchool =
-        schools.find((school) => school.code === 'SCDS') ??
-        schools.find((school) => INITIAL_SCHOOL_CODES.includes(school.code)) ??
-        schools[0]
-
-      if (primarySchool?.id) {
-        await ensureFaculty(primarySchool.id)
-      }
-
       await ensureCoursesForSchools(schools)
     })().catch((error) => {
       bootstrapPromise = null

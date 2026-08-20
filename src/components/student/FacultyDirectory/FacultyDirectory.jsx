@@ -7,7 +7,7 @@ import {
   getFacultyWeeklyAvailability,
   searchFacultyByKeyword,
 } from '../../../lib/facultyService'
-import FacultyAvailabilityGrid from './FacultyAvailabilityGrid'
+import FacultyAvailabilityGrid, { FacultyInfoNotice } from './FacultyAvailabilityGrid'
 import './FacultyDirectory.css'
 
 const SEARCH_DEBOUNCE_MS = 250
@@ -84,9 +84,6 @@ function FacultyDetailsModal({ member, courses, profile, onClose }) {
             </div>
             <div>
               <h3 className="faculty-directory__modal-title">{member.name}</h3>
-              {member.department && (
-                <p className="faculty-directory__modal-subtitle">{member.department}</p>
-              )}
             </div>
           </div>
           <button type="button" className="faculty-directory__modal-close" onClick={onClose}>
@@ -99,20 +96,15 @@ function FacultyDetailsModal({ member, courses, profile, onClose }) {
             <dt>Email</dt>
             <dd>{member.email}</dd>
           </div>
-          {member.schoolName && (
-            <div>
-              <dt>School</dt>
-              <dd>{member.schoolName}</dd>
-            </div>
-          )}
         </dl>
 
         <section className="faculty-directory__courses" aria-label="Courses taught">
           <h4 className="faculty-directory__courses-title">Courses taught</h4>
           {courses.length === 0 ? (
-            <p className="faculty-directory__courses-empty">
-              No published courses found for your current academic term.
-            </p>
+            <FacultyInfoNotice
+              title="No published courses are currently available for this faculty member."
+              detail="Courses will appear here once they are assigned in the timetable and published by the admin."
+            />
           ) : (
             <ul className="faculty-directory__courses-list">
               {courses.map((course) => (
@@ -323,11 +315,6 @@ function FacultyDirectory() {
                         <span className="faculty-directory__avatar">{member.initial}</span>
                         <span className="faculty-directory__suggestion-body">
                           <span className="faculty-directory__suggestion-name">{member.name}</span>
-                          {member.department && (
-                            <span className="faculty-directory__suggestion-department">
-                              {member.department}
-                            </span>
-                          )}
                           {member.email && (
                             <span className="faculty-directory__suggestion-email">
                               {member.email}

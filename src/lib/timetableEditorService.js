@@ -1,3 +1,4 @@
+import { formatTimetableYearLabel } from '../data/mockAcademicSetupOptions'
 import { supabase } from './supabase'
 import { groupAudiencesByEntry } from './timetableService'
 import { formatTimeValue } from './timetableUtils'
@@ -29,10 +30,28 @@ export function getSectionDisplay(audiences = []) {
     return null
   }
   const numeric = section.audience_code.replace(/^section-?/i, '')
+  if (numeric === 'none') {
+    return null
+  }
   if (/^\d+$/.test(numeric)) {
     return `Section ${numeric}`
   }
   return `Section ${section.audience_code}`
+}
+
+export function getYearLineDisplay(yearCode) {
+  return formatTimetableYearLabel(yearCode) ?? 'Year —'
+}
+
+export function getAudienceLineDisplay(audiences = []) {
+  const lab = audiences.find((item) => item.audience_type === 'lab_group')
+  const labCode = lab?.audience_code && lab.audience_code !== 'none' ? String(lab.audience_code) : ''
+  if (labCode) {
+    const match = labCode.match(/^lab-?(.+)$/i)
+    return match ? `Lab-${match[1]}` : labCode
+  }
+
+  return getSectionDisplay(audiences)
 }
 
 export function buildSectionAudience(sectionValue) {
@@ -157,6 +176,7 @@ export async function fetchDayTimetableData(dayOfWeek, academicTermId) {
       courseCode: row.course_code,
       courseName: row.course_name,
       courseCategory: row.course_category,
+      year: row.year ?? null,
       facultyMemberId: row.faculty_member_id,
       facultyName: row.faculty_name ?? 'TBA',
       roomId: row.room_id,
@@ -192,6 +212,7 @@ export async function saveTimetableCell({
   roomId,
   timeSlotId,
   sectionValue,
+  year,
   courseCategory,
   isPublished = true,
 }) {
@@ -223,6 +244,7 @@ export async function saveTimetableCell({
       facultyMemberId,
       roomId,
       timeSlotId,
+      year,
       isPublished: isPublished ?? existingEntry.isPublished ?? true,
       audiences,
     })
@@ -247,6 +269,7 @@ export async function saveTimetableCell({
     facultyMemberId,
     roomId,
     timeSlotId,
+    year,
     isPublished: isPublished ?? true,
     audiences,
   })
@@ -262,6 +285,7 @@ export async function unpublishTimetableCell(entry) {
     facultyMemberId: entry.facultyMemberId,
     roomId: entry.roomId,
     timeSlotId: entry.timeSlotId,
+    year: entry.year,
     isPublished: false,
     audiences: {},
   })

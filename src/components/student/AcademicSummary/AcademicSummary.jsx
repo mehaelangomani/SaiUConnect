@@ -6,7 +6,6 @@ import {
   MINOR_OPTIONS,
   NONE_OPTION_VALUE,
   SECTION_OPTIONS,
-  SEMESTER_OPTIONS,
 } from '../../../data/mockAcademicSetupOptions'
 import './AcademicSummary.css'
 
@@ -33,7 +32,6 @@ function AcademicSummary({ courses, isLoading, error }) {
   const sectionDisplay = getOptionLabel(SECTION_OPTIONS, profile?.section)
   const labDisplay = getOptionLabel(LAB_GROUP_OPTIONS, profile?.lab_group)
   const yearDisplay = getOptionLabel(ACADEMIC_YEAR_OPTIONS, profile?.academic_year)
-  const semesterDisplay = getOptionLabel(SEMESTER_OPTIONS, profile?.semester)
 
   const enrolledCount = isLoading ? '…' : String(courses?.length ?? 0)
 
@@ -64,10 +62,6 @@ function AcademicSummary({ courses, isLoading, error }) {
         <SummaryRow
           label="Academic year"
           value={yearDisplay !== 'None' ? yearDisplay : '—'}
-        />
-        <SummaryRow
-          label="Semester"
-          value={semesterDisplay !== 'None' ? semesterDisplay : '—'}
         />
       </dl>
     </section>

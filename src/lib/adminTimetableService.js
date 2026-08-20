@@ -60,6 +60,7 @@ function normalizeAdminEntry(row, audiences = []) {
     courseCode: row.course_code,
     courseName: row.course_name,
     courseCategory: row.course_category,
+    year: row.year ?? null,
     facultyMemberId: row.faculty_member_id,
     facultyName: row.faculty_name ?? 'TBA',
     roomId: row.room_id,
@@ -100,7 +101,6 @@ export async function fetchTimetableFormOptions(schoolId) {
     supabase
       .from('faculty_members')
       .select('id, name, email')
-      .eq('school_id', schoolId)
       .eq('is_active', true)
       .order('name'),
     supabase
@@ -382,6 +382,7 @@ export async function createTimetableEntry({
   facultyMemberId,
   roomId,
   timeSlotId,
+  year,
   isPublished = false,
   notes = null,
   audiences = {},
@@ -409,6 +410,7 @@ export async function createTimetableEntry({
       faculty_member_id: facultyMemberId || null,
       room_id: roomId,
       time_slot_id: timeSlotId,
+      year: year || null,
       is_published: isPublished,
       notes,
     })
@@ -436,6 +438,7 @@ export async function updateTimetableEntry({
   facultyMemberId,
   roomId,
   timeSlotId,
+  year,
   isPublished,
   notes = null,
   audiences = {},
@@ -486,6 +489,7 @@ export async function updateTimetableEntry({
     faculty_member_id: facultyMemberId || null,
     room_id: roomId,
     time_slot_id: timeSlotId,
+    year: year !== undefined ? year || null : previousEntry?.year ?? null,
     is_published: willBePublished,
     notes,
     updated_at: new Date().toISOString(),
@@ -547,6 +551,7 @@ export async function publishTimetableEntry(entry) {
     facultyMemberId: entry.facultyMemberId,
     roomId: entry.roomId,
     timeSlotId: entry.timeSlotId,
+    year: entry.year,
     isPublished: true,
     notes: entry.notes,
     audiences: {
@@ -571,6 +576,7 @@ export async function unpublishTimetableEntry(entry) {
     facultyMemberId: entry.facultyMemberId,
     roomId: entry.roomId,
     timeSlotId: entry.timeSlotId,
+    year: entry.year,
     isPublished: false,
     notes: entry.notes,
     audiences: {
