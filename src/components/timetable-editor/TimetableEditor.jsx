@@ -208,19 +208,39 @@ function TimetableEditor({ mode = 'admin' }) {
   }
 
   const handleDeleteSlot = async (slot) => {
-    const usageCount = await countEntriesForTimeSlot(slot.id)
-    setConfirmState({
-      title: 'Remove time slot?',
-      message:
-        usageCount > 0
-          ? `This slot is used by ${usageCount} class${usageCount === 1 ? '' : 'es'}. Deleting it may fail if entries still reference it.`
-          : `Remove ${formatTimeSlotLabel(slot)} from ${DAY_NAMES[selectedDay]}?`,
-      onConfirm: async () => {
-        await deleteTimeSlot(slot.id)
-        setConfirmState(null)
-        await loadDay()
-      },
-    })
+    try {
+      const usageCount = await countEntriesForTimeSlot(slot.id)
+  
+      setConfirmError(null)
+  
+      setConfirmState({
+        title: 'Remove time slot?',
+        message:
+          usageCount > 0
+            ? `This time slot is used by ${usageCount} timetable class${usageCount === 1 ? '' : 'es'}. Deleting this row will also remove those timetable entries. Do you want to continue?`
+            : `Remove ${formatTimeSlotLabel(slot)} from ${DAY_NAMES[selectedDay]}?`,
+        onConfirm: async () => {
+          try {
+            await deleteTimeSlot(slot.id)
+  
+            setConfirmState(null)
+            setConfirmError(null)
+  
+            await loadDay()
+          } catch (deleteError) {
+            setConfirmError(
+              deleteError?.message ??
+                'Could not delete the time slot. Please try again.',
+            )
+          }
+        },
+      })
+    } catch (usageError) {
+      setConfirmError(
+        usageError?.message ??
+          'Could not check whether this time slot is being used.',
+      )
+    }
   }
 
   const handleSaveRoomHeader = async (roomId) => {

@@ -84,3 +84,17 @@
     padding-top: var(--suc-space-4);
   }
 }
+
+@media (max-width: 480px) {
+  .faculty-portal__header {
+    padding: var(--suc-space-3) var(--suc-space-4);
+  }
+
+  .faculty-portal__main {
+    width: calc(100% - var(--suc-space-4));
+  }
+
+  .faculty-portal__title {
+    font-size: var(--suc-font-size-xl);
+  }
+}

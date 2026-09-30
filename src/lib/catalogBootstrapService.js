@@ -1,3 +1,4 @@
+import { supabase } from './supabase'
 import {
   createCourse,
   createFacultyMember,
@@ -49,15 +50,27 @@ const DUMMY_FACULTY = [
     name: 'Dr. Dummy Gamma',
     email: 'dummy.gamma@test.saiuconnect.invalid',
   },
+  {
+    name: 'Dr. Dummy Delta',
+    email: 'dummy.delta@test.saiuconnect.invalid',
+  },
+  {
+    name: 'Dr. Dummy Epsilon',
+    email: 'dummy.epsilon@test.saiuconnect.invalid',
+  },
+  {
+    name: 'Dr. Dummy Jane',
+    email: 'dummy.jane@test.saiuconnect.invalid',
+  },
 ]
 
 const DUMMY_COURSES = [
   { code: 'CS201', name: 'Data Structures', category: 'core' },
   { code: 'CS202', name: 'Programming in Python', category: 'core' },
   { code: 'CS203', name: 'Database Management Systems', category: 'core' },
+  { code: 'CS204', name: 'Data Structures Lab', category: 'lab' },
   { code: 'CY301', name: 'Cyber Security', category: 'elective' },
   { code: 'ML301', name: 'Machine Learning', category: 'elective' },
-  { code: 'CS204', name: 'Data Structures Lab', category: 'lab' },
   { code: 'ECO301', name: 'Economics for Computing', category: 'minor' },
 ]
 
@@ -72,7 +85,13 @@ const INITIAL_SECTIONS = [
   { code: 'none', label: 'None' },
 ]
 
+const UNIQUE_VIOLATION = '23505'
+
 let bootstrapPromise = null
+
+function isUniqueViolation(error) {
+  return String(error?.code ?? '') === UNIQUE_VIOLATION
+}
 
 async function ensureSchools() {
   const existing = await fetchAllSchools(true)
@@ -98,15 +117,25 @@ async function ensureRooms() {
 
 async function ensureFaculty() {
   const existing = await fetchAllFaculty(true)
-  if (existing.length > 0) {
-    return
-  }
+  const existingEmails = new Set(
+    existing.map((member) => String(member.email ?? '').trim().toLowerCase()),
+  )
 
   for (const member of DUMMY_FACULTY) {
-    await createFacultyMember({
-      name: member.name,
-      email: member.email,
-    })
+    if (existingEmails.has(member.email)) {
+      continue
+    }
+
+    try {
+      await createFacultyMember({
+        name: member.name,
+        email: member.email,
+      })
+    } catch (error) {
+      if (!isUniqueViolation(error)) {
+        throw error
+      }
+    }
   }
 }
 
@@ -121,24 +150,44 @@ async function ensureSections() {
   }
 }
 
-async function ensureCoursesForSchools(schools) {
-  const existing = await fetchAllCourses(true)
-  const schoolsToSeed = schools.filter((school) => INITIAL_SCHOOL_CODES.includes(school.code))
+async function ensureScdsCourses(schools) {
+  const scds = schools.find((school) => school.code === 'SCDS')
+  if (!scds) {
+    return
+  }
 
-  for (const school of schoolsToSeed) {
-    const hasCoursesForSchool = existing.some((course) => course.school_id === school.id)
-    if (hasCoursesForSchool) {
+  const existing = await fetchAllCourses(true)
+  const existingCodes = new Set(
+    existing
+      .filter((course) => course.school_id === scds.id)
+      .map((course) => String(course.code ?? '').toUpperCase()),
+  )
+
+  for (const course of DUMMY_COURSES) {
+    if (existingCodes.has(course.code)) {
       continue
     }
 
-    for (const course of DUMMY_COURSES) {
+    try {
       await createCourse({
         code: course.code,
         name: course.name,
         category: course.category,
-        schoolId: school.id,
+        schoolId: scds.id,
       })
+    } catch (error) {
+      if (!isUniqueViolation(error)) {
+        throw error
+      }
     }
+  }
+}
+
+async function ensureDummyTimetable() {
+  const { error } = await supabase.rpc('ensure_dummy_timetable_bootstrap')
+
+  if (error) {
+    throw error
   }
 }
 
@@ -151,7 +200,8 @@ export async function ensureCatalogBootstrap() {
       await ensureFaculty()
 
       const schools = await fetchAllSchools()
-      await ensureCoursesForSchools(schools)
+      await ensureScdsCourses(schools)
+      await ensureDummyTimetable()
     })().catch((error) => {
       bootstrapPromise = null
       throw error

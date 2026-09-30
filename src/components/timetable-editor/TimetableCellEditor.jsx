@@ -28,7 +28,12 @@ const COURSE_FIELD_OPTIONS = Object.values(COURSE_CATEGORY_LABELS).map((label) =
 }))
 
 const FACULTY_ADD_FIELDS = [
-  { key: 'name', label: 'Faculty name', placeholder: 'Dr. Jane Doe', required: true },
+  {
+    key: 'name',
+    label: 'Faculty name',
+    placeholder: 'Dr. Jane Doe',
+    required: true,
+  },
   {
     key: 'email',
     label: 'Faculty email',
@@ -39,18 +44,27 @@ const FACULTY_ADD_FIELDS = [
 ]
 
 function parseSectionValueFromEntry(audiences = []) {
-  const sectionAudience = audiences.find((item) => item.audience_type === 'section')
+  const sectionAudience = audiences.find(
+    (item) => item.audience_type === 'section',
+  )
+
   if (!sectionAudience) {
     return ''
   }
 
-  const normalized = String(sectionAudience.audience_code).replace(/^section-?/i, '')
+  const normalized = String(sectionAudience.audience_code).replace(
+    /^section-?/i,
+    '',
+  )
+
   if (normalized === 'none') {
     return 'none'
   }
+
   if (/^\d+$/.test(normalized)) {
     return normalized
   }
+
   return ''
 }
 
@@ -80,7 +94,9 @@ function TimetableCellEditor({
 
   const initializedCellKeyRef = useRef(null)
 
-  const cellKey = cellContext ? `${cellContext.timeSlotId}:${cellContext.roomId}` : null
+  const cellKey = cellContext
+    ? `${cellContext.timeSlotId}:${cellContext.roomId}`
+    : null
 
   const selectedCourse = useMemo(
     () => courses.find((course) => course.id === courseId),
@@ -88,7 +104,10 @@ function TimetableCellEditor({
   )
 
   const schoolCourses = useMemo(
-    () => (schoolId ? courses.filter((course) => course.school_id === schoolId) : []),
+    () =>
+      schoolId
+        ? courses.filter((course) => course.school_id === schoolId)
+        : [],
     [courses, schoolId],
   )
 
@@ -135,6 +154,7 @@ function TimetableCellEditor({
     (newSchoolId) => {
       if (!newSchoolId) {
         setSchoolId('')
+        setCourseId('')
         return
       }
 
@@ -144,10 +164,13 @@ function TimetableCellEditor({
         if (!currentCourseId) {
           return currentCourseId
         }
+
         const course = courses.find((item) => item.id === currentCourseId)
+
         if (course && course.school_id !== newSchoolId) {
           return ''
         }
+
         return currentCourseId
       })
     },
@@ -195,13 +218,23 @@ function TimetableCellEditor({
   }
 
   const handleDone = async () => {
-    if (!schoolId || !courseId || !facultyMemberId || !courseCategory) {
-      setError('School, faculty, course, and course field are required.')
+    if (!yearValue) {
+      setError('Select a year before entering the other timetable details.')
       return
     }
 
-    if (!yearValue) {
-      setError('Select a year before saving this class.')
+    if (!schoolId) {
+      setError('Select a school.')
+      return
+    }
+
+    if (!courseCategory) {
+      setError('Select a course field.')
+      return
+    }
+
+    if (!courseId || !facultyMemberId) {
+      setError('Course and faculty are required.')
       return
     }
 
@@ -223,8 +256,10 @@ function TimetableCellEditor({
         courseCategory,
         isPublished: true,
       })
+
       setSuccess(true)
       onSaved()
+
       setTimeout(() => {
         onClose()
       }, 600)
@@ -246,6 +281,7 @@ function TimetableCellEditor({
     }
 
     setIsSaving(true)
+
     try {
       await unpublishTimetableCell(entry)
       onSaved()
@@ -260,16 +296,35 @@ function TimetableCellEditor({
 
   return (
     <>
-      <button type="button" className="timetable-cell-editor__backdrop" onClick={onClose} aria-label="Close editor" />
-      <aside className="timetable-cell-editor suc-card" role="dialog" aria-modal="true">
+      <button
+        type="button"
+        className="timetable-cell-editor__backdrop"
+        onClick={onClose}
+        aria-label="Close editor"
+      />
+
+      <aside
+        className="timetable-cell-editor suc-card"
+        role="dialog"
+        aria-modal="true"
+      >
         <header className="timetable-cell-editor__header">
           <div>
-            <h3 className="timetable-cell-editor__title">Edit Timetable Cell</h3>
+            <h3 className="timetable-cell-editor__title">
+              Edit Timetable Cell
+            </h3>
+
             <p className="timetable-cell-editor__context">
-              {cellContext.dayLabel} · {cellContext.timeLabel} · {cellContext.roomLabel}
+              {cellContext.dayLabel} · {cellContext.timeLabel} ·{' '}
+              {cellContext.roomLabel}
             </p>
           </div>
-          <button type="button" className="timetable-cell-editor__close" onClick={onClose}>
+
+          <button
+            type="button"
+            className="timetable-cell-editor__close"
+            onClick={onClose}
+          >
             ×
           </button>
         </header>
@@ -280,61 +335,78 @@ function TimetableCellEditor({
               <p>{error}</p>
             </div>
           )}
+
           {success && (
             <div className="suc-alert suc-alert--success" role="status">
               <p>Saved successfully.</p>
             </div>
           )}
 
+          {/* 1. YEAR */}
           <AutocompleteField
-            label="Course name"
-            value={courseId}
-            options={courseOptions}
-            placeholder="Select course"
+            label="Year"
+            value={yearValue}
+            options={TIMETABLE_YEAR_OPTIONS}
             onChange={(value) => {
-              setCourseId(value)
-              const course = schoolCourses.find((item) => item.id === value)
-              if (course) {
-                setCourseCategory(course.category)
-              }
+              setYearValue(value)
+              setError(null)
             }}
-            onAdd={async (name) => {
-              if (!schoolId) {
-                setError('Select a school before adding a course.')
+            placeholder="Select year"
+            allowAdd={false}
+            allowDelete={false}
+            getOptionValue={(option) => option.value}
+            getOptionLabel={(option) => option.label}
+            filterOption={(option, query) =>
+              option.label.toLowerCase().includes(query.toLowerCase())
+            }
+          />
+
+          {/* 2. SCHOOL */}
+          <AutocompleteField
+            label="School"
+            value={schoolId}
+            options={schoolOptions}
+            onChange={handleSchoolChange}
+            placeholder="Select school"
+            onAdd={async (code) => {
+              if (!yearValue) {
+                setError('Select a year before adding a school.')
                 return
               }
-              const code = String(name).split(' ')[0].toUpperCase().slice(0, 12)
-              const created = await createCourse({
-                code,
-                name,
-                category: courseCategory || 'core',
-                schoolId,
-              })
+
+              const created = await createSchool(code, code)
               await onRefreshCatalog()
-              setCourseId(created.id)
+              setSchoolId(created.id)
             }}
             onDelete={async (option) => {
-              const courseRowId = option?.id
-              if (!courseRowId) {
-                throw new Error('This course is missing a database ID. Refresh and try again.')
+              const schoolRowId = option?.id
+
+              if (!schoolRowId) {
+                throw new Error(
+                  'This school is missing a database ID. Refresh and try again.',
+                )
               }
-              await deactivateCourse(courseRowId)
+
+              await deactivateSchool(schoolRowId)
               await onRefreshCatalog()
-              if (courseId === courseRowId) {
+
+              if (schoolId === schoolRowId) {
+                setSchoolId('')
                 setCourseId('')
               }
             }}
-            getOptionValue={(option) => option.id}
             getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.id}
             filterOption={(option, query) =>
               option.label.toLowerCase().includes(query.toLowerCase())
             }
             getDeleteConfirmMessage={(option) =>
               `Deactivate ${option.label}? It will be removed from autocomplete but timetable history is preserved.`
             }
-            addLabel="+ ADD COURSE"
+            addLabel="+ ADD SCHOOL"
           />
 
+          {/* 3. COURSE FIELD */}
           <AutocompleteField
             label="Course field"
             value={courseCategory}
@@ -350,54 +422,79 @@ function TimetableCellEditor({
             placeholder="Select course field"
           />
 
+          {/* 4. COURSE NAME */}
           <AutocompleteField
-            label="School"
-            value={schoolId}
-            options={schoolOptions}
-            onChange={handleSchoolChange}
-            placeholder="Select school"
-            onAdd={async (code) => {
-              const created = await createSchool(code, code)
+            label="Course name"
+            value={courseId}
+            options={courseOptions}
+            placeholder={
+              !schoolId ? 'Select school first' : 'Select course'
+            }
+            onChange={(value) => {
+              setCourseId(value)
+
+              const course = schoolCourses.find(
+                (item) => item.id === value,
+              )
+
+              if (course) {
+                setCourseCategory(course.category)
+              }
+            }}
+            onAdd={async (name) => {
+              if (!yearValue) {
+                setError('Select a year before adding a course.')
+                return
+              }
+
+              if (!schoolId) {
+                setError('Select a school before adding a course.')
+                return
+              }
+
+              const code = String(name)
+                .split(' ')[0]
+                .toUpperCase()
+                .slice(0, 12)
+
+              const created = await createCourse({
+                code,
+                name,
+                category: courseCategory || 'core',
+                schoolId,
+              })
+
               await onRefreshCatalog()
-              setSchoolId(created.id)
+              setCourseId(created.id)
             }}
             onDelete={async (option) => {
-              const schoolRowId = option?.id
-              if (!schoolRowId) {
-                throw new Error('This school is missing a database ID. Refresh and try again.')
+              const courseRowId = option?.id
+
+              if (!courseRowId) {
+                throw new Error(
+                  'This course is missing a database ID. Refresh and try again.',
+                )
               }
-              await deactivateSchool(schoolRowId)
+
+              await deactivateCourse(courseRowId)
               await onRefreshCatalog()
-              if (schoolId === schoolRowId) {
-                setSchoolId('')
+
+              if (courseId === courseRowId) {
+                setCourseId('')
               }
             }}
-            getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.id}
+            getOptionLabel={(option) => option.label}
             filterOption={(option, query) =>
               option.label.toLowerCase().includes(query.toLowerCase())
             }
             getDeleteConfirmMessage={(option) =>
               `Deactivate ${option.label}? It will be removed from autocomplete but timetable history is preserved.`
             }
-            addLabel="+ ADD SCHOOL"
+            addLabel="+ ADD COURSE"
           />
 
-          <AutocompleteField
-            label="Year"
-            value={yearValue}
-            options={TIMETABLE_YEAR_OPTIONS}
-            onChange={setYearValue}
-            placeholder="Select year"
-            allowAdd={false}
-            allowDelete={false}
-            getOptionValue={(option) => option.value}
-            getOptionLabel={(option) => option.label}
-            filterOption={(option, query) =>
-              option.label.toLowerCase().includes(query.toLowerCase())
-            }
-          />
-
+          {/* 5. SECTION */}
           <AutocompleteField
             label="Section"
             value={sectionValue}
@@ -406,23 +503,37 @@ function TimetableCellEditor({
             placeholder="Select section"
             onAdd={async (label) => {
               const trimmed = String(label).trim()
+
               if (!trimmed) {
                 return
               }
+
               const created = await createSection({
-                code: trimmed.toLowerCase() === 'none' ? 'none' : trimmed,
-                label: trimmed.toLowerCase() === 'none' ? 'None' : trimmed,
+                code:
+                  trimmed.toLowerCase() === 'none'
+                    ? 'none'
+                    : trimmed,
+                label:
+                  trimmed.toLowerCase() === 'none'
+                    ? 'None'
+                    : trimmed,
               })
+
               await onRefreshCatalog()
               setSectionValue(created.code)
             }}
             onDelete={async (option) => {
               const sectionRowId = option?.id
+
               if (!sectionRowId) {
-                throw new Error('This section is missing a database ID. Refresh and try again.')
+                throw new Error(
+                  'This section is missing a database ID. Refresh and try again.',
+                )
               }
+
               await deactivateSection(sectionRowId)
               await onRefreshCatalog()
+
               if (sectionValue === option.value) {
                 setSectionValue('')
               }
@@ -431,6 +542,7 @@ function TimetableCellEditor({
             getOptionLabel={(option) => option.label}
             filterOption={(option, query) => {
               const normalized = query.toLowerCase()
+
               return (
                 option.label.toLowerCase().includes(normalized) ||
                 option.value.toLowerCase().includes(normalized)
@@ -442,6 +554,7 @@ function TimetableCellEditor({
             addLabel="+ ADD SECTION"
           />
 
+          {/* 6. FACULTY */}
           <AutocompleteField
             label="Faculty name"
             value={facultyMemberId}
@@ -454,16 +567,22 @@ function TimetableCellEditor({
                 name: values.name,
                 email: values.email,
               })
+
               await onRefreshCatalog()
               setFacultyMemberId(created.id)
             }}
             onDelete={async (option) => {
               const facultyRowId = option?.id
+
               if (!facultyRowId) {
-                throw new Error('This faculty member is missing a database ID. Refresh and try again.')
+                throw new Error(
+                  'This faculty member is missing a database ID. Refresh and try again.',
+                )
               }
+
               await deactivateFacultyMember(facultyRowId)
               await onRefreshCatalog()
+
               if (facultyMemberId === facultyRowId) {
                 setFacultyMemberId('')
               }
@@ -480,7 +599,8 @@ function TimetableCellEditor({
 
           {selectedCourse && (
             <p className="timetable-cell-editor__hint">
-              Selected: {selectedCourse.name} · {getCourseCategoryLabel(selectedCourse.category)}
+              Selected: {selectedCourse.name} ·{' '}
+              {getCourseCategoryLabel(selectedCourse.category)}
             </p>
           )}
         </div>
@@ -496,7 +616,13 @@ function TimetableCellEditor({
               Clear cell
             </button>
           )}
-          <button type="button" className="suc-btn suc-btn--primary" onClick={handleDone} disabled={isSaving}>
+
+          <button
+            type="button"
+            className="suc-btn suc-btn--primary"
+            onClick={handleDone}
+            disabled={isSaving}
+          >
             {isSaving ? 'Saving…' : 'DONE'}
           </button>
         </footer>

@@ -366,8 +366,29 @@ export async function updateTimeSlot(timeSlotId, { startTime, endTime }) {
 }
 
 export async function deleteTimeSlot(timeSlotId) {
-  const { error } = await supabase.from('time_slots').delete().eq('id', timeSlotId)
-  if (error) throw error
+  const normalizedId = String(timeSlotId ?? '').trim()
+
+  if (!normalizedId) {
+    throw new Error('Cannot delete time slot: missing database ID.')
+  }
+
+  const { error: entriesDeleteError } = await supabase
+    .from('timetable_entries')
+    .delete()
+    .eq('time_slot_id', normalizedId)
+
+  if (entriesDeleteError) {
+    throw entriesDeleteError
+  }
+
+  const { error: slotDeleteError } = await supabase
+    .from('time_slots')
+    .delete()
+    .eq('id', normalizedId)
+
+  if (slotDeleteError) {
+    throw slotDeleteError
+  }
 }
 
 export async function countEntriesForTimeSlot(timeSlotId) {

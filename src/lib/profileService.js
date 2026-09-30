@@ -5,6 +5,7 @@ const PROFILE_FIELDS = [
   'role',
   'email',
   'name',
+  'prn',
   'school',
   'graduation_year',
   'initial',
@@ -17,10 +18,6 @@ const PROFILE_FIELDS = [
   'academic_setup_completed',
 ].join(', ')
 
-/**
- * Fetch the authenticated user's profile from the database.
- * Role is always resolved from the profile — never from the login form.
- */
 export async function fetchUserProfile(userId) {
   const { data, error } = await supabase
     .from('profiles')
@@ -29,41 +26,85 @@ export async function fetchUserProfile(userId) {
     .maybeSingle()
 
   if (error) {
+    console.error('fetchUserProfile error:', error)
     throw error
   }
 
   return data
 }
 
-/**
- * Persist a student's academic setup selections to their profile.
- * Sets academic_setup_completed to true on success.
- */
 export async function saveAcademicSetup(userId, setupData) {
-  return updateAcademicSetup(userId, setupData)
-}
+  const updatePayload = {
+    prn: String(setupData.prn ?? '').trim(),
+    academic_year: setupData.academicYear,
+    minor: setupData.minor,
+    electives: setupData.electives,
+    section: setupData.section,
+    lab_group: setupData.labGroup,
+    academic_setup_completed: true,
+  }
 
-/**
- * Update an existing student's academic configuration.
- * Keeps academic_setup_completed true after a successful edit.
- */
-export async function updateAcademicSetup(userId, setupData) {
+  console.log('saveAcademicSetup payload:', updatePayload)
+
   const { data, error } = await supabase
     .from('profiles')
-    .update({
-      academic_year: setupData.academicYear,
-      minor: setupData.minor,
-      electives: setupData.electives,
-      section: setupData.section,
-      lab_group: setupData.labGroup,
-      academic_setup_completed: true,
-    })
+    .update(updatePayload)
     .eq('id', userId)
     .select(PROFILE_FIELDS)
     .single()
 
   if (error) {
-    throw error
+    console.error('saveAcademicSetup SUPABASE ERROR:', error)
+    console.error('code:', error.code)
+    console.error('message:', error.message)
+    console.error('details:', error.details)
+    console.error('hint:', error.hint)
+
+    throw new Error(
+      `[${error.code ?? 'UNKNOWN'}] ${error.message}${
+        error.details ? ` | ${error.details}` : ''
+      }${
+        error.hint ? ` | Hint: ${error.hint}` : ''
+      }`,
+    )
+  }
+
+  return data
+}
+
+export async function updateAcademicSetup(userId, setupData) {
+  const updatePayload = {
+    academic_year: setupData.academicYear,
+    minor: setupData.minor,
+    electives: setupData.electives,
+    section: setupData.section,
+    lab_group: setupData.labGroup,
+    academic_setup_completed: true,
+  }
+
+  console.log('updateAcademicSetup payload:', updatePayload)
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(updatePayload)
+    .eq('id', userId)
+    .select(PROFILE_FIELDS)
+    .single()
+
+  if (error) {
+    console.error('updateAcademicSetup SUPABASE ERROR:', error)
+    console.error('code:', error.code)
+    console.error('message:', error.message)
+    console.error('details:', error.details)
+    console.error('hint:', error.hint)
+
+    throw new Error(
+      `[${error.code ?? 'UNKNOWN'}] ${error.message}${
+        error.details ? ` | ${error.details}` : ''
+      }${
+        error.hint ? ` | Hint: ${error.hint}` : ''
+      }`,
+    )
   }
 
   return data
